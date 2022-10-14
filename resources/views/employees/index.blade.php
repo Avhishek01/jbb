@@ -1,4 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+    <link href="/css/app.css" rel="stylesheet">
+    <script src="{{ asset('/js/app.js')}}"></script>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -97,3 +99,56 @@
         </div>
     </div>
 </nav>
+<BR>
+    <BR>
+@extends('employees.layout')
+ 
+@section('content')
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+          
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-success" href="{{ route('employee.create') }}"> Create new employee</a>
+            </div>
+        </div>
+    </div><BR><BR>
+   
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+    @endif
+   
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Profile</th>
+            <th width="250px">Action</th>
+        </tr>
+        @foreach ($employees as $employee)
+        <tr>
+            
+            <td>{{ $employee->name }}</td>
+            <td>{{ $employee->email }}</td>
+            <td>{{ $employee->profile }}</td>
+            <td>
+                <form action="{{ route('employee.destroy',$employee->id) }}" method="POST">
+   
+                    <a class="btn btn-primary" href="{{ route('employee.edit',$employee->id) }}">Edit</a>
+   
+                    @csrf
+                    @method('DELETE')
+      
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </table>
+  
+  
+      
+@endsection

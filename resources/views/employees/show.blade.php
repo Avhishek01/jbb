@@ -1,4 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+    <link href="/css/app.css" rel="stylesheet">
+    <script src="{{ asset('/js/app.js')}}"></script>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -97,3 +99,27 @@
         </div>
     </div>
 </nav>
+
+@extends('employees.layout')
+
+@section('content')
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <h2> Show employee</h2>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-primary" href="{{ route('employee.index') }}"> Back</a>
+            </div>
+        </div>
+    </div>
+   
+    <form action="{{ route('employee.show') }}" method="post">
+        <center>
+        @csrf
+        NAME: <input type="text" name="name" placeholder="enter your name"><br><br>
+        Email: <input type="text" name="email" placeholder="enter your name"><br><br>
+        Profile: <input type="text" name="profile" placeholder="enter your name"><br><br>
+       
+    </form>
+@endsection

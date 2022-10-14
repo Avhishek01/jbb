@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\employeeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,5 +27,6 @@ Route::get('/greeting', function () {
     return 'Hello World';
 });
 
-Route::view('employee','employee');
-Route::post('employee',[EmployeeController::class,'addemployee']);
+//Route::get('create',[employeeController::class,'create'])->name('employee.index');
+//Route::post('create',[employeeController::class,'store']);
+Route::resource('employee',employeeController::class);

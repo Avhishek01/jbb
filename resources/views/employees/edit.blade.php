@@ -1,4 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+    <link href="/css/app.css" rel="stylesheet">
+    <script src="{{ asset('/js/app.js')}}"></script>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -97,3 +99,59 @@
         </div>
     </div>
 </nav>
+
+@extends('employees.layout')
+   
+@section('content')
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <h2>Edit Blog</h2>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-primary" href="{{ route('employee.index') }}"> Back</a>
+            </div>
+        </div>
+    </div>
+   
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Warning!</strong> Please check input field code<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+  
+    <form action="{{ route('employee.update',$employee->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+   
+         <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Name:</strong>
+                    <input type="text" name="name" value="{{ $employee->name }}" class="form-control" placeholder="enter new name">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Email:</strong>
+                    <textarea class="form-control" style="height:150px" name="email" placeholder="enter your new email">{{ $employee->email }}</textarea>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Profile:</strong>
+                    <textarea class="form-control" style="height:150px" name="profile" placeholder="enter your new profile">{{ $employee->profile }}</textarea>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+   
+    </form>
+@endsection

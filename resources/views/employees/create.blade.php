@@ -1,4 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+    <link href="/css/app.css" rel="stylesheet">
+    <script src="{{ asset('/js/app.js')}}"></script>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -97,3 +99,42 @@
         </div>
     </div>
 </nav>
+
+ <BR> 
+    <BR> 
+@extends('employees.layout')
+  
+@section('content')
+<center>
+<div class="row">
+    
+    <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <h2>Create New Employee</h2>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-primary" href="{{ route('employee.index') }}"> Back</a>
+        </div>
+    </div>
+</div>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>Warning!</strong> Please check your input code<br><br>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+<br>
+
+<form action="{{ route('employee.store') }}" method="POST">
+    <center>
+    @csrf
+    NAME: <input type="text" name="name" placeholder="enter your name"><br><br>
+    Email: <input type="text" name="email" placeholder="enter your name"><br><br>
+    Profile: <input type="text" name="profile" placeholder="enter your name"><br><br>
+    <button type="submit" >SUBMIT</button>
+</form>
+@endsection
