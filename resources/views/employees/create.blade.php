@@ -112,9 +112,7 @@
         <div class="pull-left">
             <h2>Create New Employee</h2>
         </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('employee.index') }}"> Back</a>
-        </div>
+       
     </div>
 </div>
 @if ($errors->any())
@@ -135,6 +133,10 @@
     NAME: <input type="text" name="name" placeholder="enter your name"><br><br>
     Email: <input type="text" name="email" placeholder="enter your name"><br><br>
     Profile: <input type="text" name="profile" placeholder="enter your name"><br><br>
-    <button type="submit" >SUBMIT</button>
+    <button type="submit" style="background-color:chocolate; color:white; font-size:20px; border-radius: 3px;" >SUBMIT</button>
+    <br><br>
+    <div class="pull-right">
+        <a class="btn btn-primary" href="{{ route('employee.index') }}"> Back</a>
+    </div>
 </form>
 @endsection

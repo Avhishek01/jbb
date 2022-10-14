@@ -99,7 +99,8 @@
         </div>
     </div>
 </nav>
-
+<br> 
+<br>
 @extends('employees.layout')
    
 @section('content')
@@ -128,30 +129,9 @@
     <form action="{{ route('employee.update',$employee->id) }}" method="POST">
         @csrf
         @method('PUT')
-   
-         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Name:</strong>
-                    <input type="text" name="name" value="{{ $employee->name }}" class="form-control" placeholder="enter new name">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Email:</strong>
-                    <textarea class="form-control" style="height:150px" name="email" placeholder="enter your new email">{{ $employee->email }}</textarea>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Profile:</strong>
-                    <textarea class="form-control" style="height:150px" name="profile" placeholder="enter your new profile">{{ $employee->profile }}</textarea>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-   
+        NAME: <input type="text" name="name" placeholder="enter your name" value="{{$employee->name}}"><br><br>
+        Email: <input type="text" name="email" placeholder="enter your name" value="{{$employee->email}}"><br><br>
+        Profile: <input type="text" name="profile" placeholder="enter your name" value="{{$employee->profile}}"><br><br>
+        <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >SUBMIT</button>
     </form>
 @endsection
