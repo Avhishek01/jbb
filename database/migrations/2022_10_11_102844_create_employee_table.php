@@ -19,7 +19,7 @@ class CreateEmployeeTable extends Migration
             $table->string('email');
             $table->string('profile');
             $table->unsignedBigInteger('employee_id'); //making foreign key
-            $table->foreign('employee_id')->references('id')->on('users')->default()->nullable();
+            $table->foreign('employee_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -130,8 +130,11 @@
 <form action="{{ route('employee.store') }}" method="POST">
     <center>
     @csrf
-    NAME: <input type="text" name="name" placeholder="enter your name"><br><br>
+    <span style="color: red">@error('Name'){{$message}}@enderror</span>
+    NAME: <input type="text" name="Name" placeholder="enter your name"><br><br>
+    <span style="color: red">@error('email'){{$message}}@enderror</span>
     Email: <input type="text" name="email" placeholder="enter your name"><br><br>
+    <span style="color: red">@error('profile'){{$message}}@enderror</span>
     Profile: <input type="text" name="profile" placeholder="enter your name"><br><br>
     <button type="submit" style="background-color:chocolate; color:white; font-size:20px; border-radius: 3px;" >SUBMIT</button>
     <br><br>

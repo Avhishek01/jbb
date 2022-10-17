@@ -102,16 +102,16 @@
 <br> 
 <br>
 @extends('employees.layout')
-   
+   <center>
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Edit Blog</h2>
+                <h2>Edit Employee</h2>
             </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('employee.index') }}"> Back</a>
-            </div>
+            <br>
+            
+           
         </div>
     </div>
    
@@ -129,9 +129,13 @@
     <form action="{{ route('employee.update',$employee->id) }}" method="POST">
         @csrf
         @method('PUT')
-        NAME: <input type="text" name="name" placeholder="enter your name" value="{{$employee->name}}"><br><br>
+        <span style="color: red">@error('Name'){{$message}}@enderror</span>
+        NAME: <input type="text" name="Name" placeholder="enter your name" value="{{$employee->name}}"><br><br>
         Email: <input type="text" name="email" placeholder="enter your name" value="{{$employee->email}}"><br><br>
+        <span style="color: red">@error('email'){{$message}}@enderror</span>
         Profile: <input type="text" name="profile" placeholder="enter your name" value="{{$employee->profile}}"><br><br>
-        <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >SUBMIT</button>
+        <span style="color: red">@error('profile'){{$message}}@enderror</span>
+        <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
+       
     </form>
 @endsection

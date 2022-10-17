@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\employe;
+use DB;
 
 class employeeController extends Controller
 {
@@ -37,15 +38,19 @@ class employeeController extends Controller
      */
     public function store(Request $request)
     {
+        $validate = $request->validate([
+            'Name'=> 'required|alpha',
+            'email'=> 'required|email',
+            'profile'=> 'required'
+        ]);
         $employee = new employe;
-        $employee->name=$request->name;
+        $employee->Name=$request->Name;
         $employee->email=$request->email;
         $employee->profile=$request->profile;
         $employee->employee_id=auth()->user()->id;
         $employee->save();
         
         return redirect('employee')->with('status', 'Profile updated!');
-
        
     }
 
@@ -59,6 +64,9 @@ class employeeController extends Controller
     public function edit($id)
     {
         
+        $employee = DB::table('employee')->where('id',$id)->first();
+        return view ('employees.edit', compact('employee'));
+      
     }
 
     /**
@@ -70,7 +78,15 @@ class employeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+  
+        
+        DB::table('employee')->where ('id', $id)->update([
+            'Name'=>$request->Name,
+            'email'=>$request->email,
+            'profile'=>$request->profile,
+        ]);
+        return redirect('employee')->with('status', 'Profile updated!');
+        
     }
 
     /**
@@ -81,7 +97,8 @@ class employeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('employee')->where('id', $id)->delete();
+        return back()->with('post dleted sucessfully');
     }
 
 }
