@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\employe;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class employeeController extends Controller
 {
@@ -15,7 +16,9 @@ class employeeController extends Controller
      */
     public function index()
     {
-        $employees = employe::latest()->paginate(10);
+        $id=Auth::user()->id;
+        
+        $employees = employe::latest()->where('employee_id','=',$id)->paginate(10);
   
         return view('employees.index',compact('employees'));
     }
@@ -65,8 +68,12 @@ class employeeController extends Controller
     {
         
         $employee = DB::table('employee')->where('id',$id)->first();
-        return view ('employees.edit', compact('employee'));
+        
       
+        
+        
+            return view ('employees.edit', compact('employee'));
+        
     }
 
     /**
@@ -78,8 +85,12 @@ class employeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-  
-        
+        $validate = $request->validate([
+            'Name'=> 'required',
+            'email'=> 'required|email',
+            'profile'=> 'required'
+        ]);
+    
         DB::table('employee')->where ('id', $id)->update([
             'Name'=>$request->Name,
             'email'=>$request->email,
