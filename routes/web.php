@@ -31,4 +31,6 @@ Route::get('/greeting', function () {
 
 //Route::get('create',[employeeController::class,'create'])->name('employee.index');
 //Route::post('create',[employeeController::class,'store']);
+//Route::resource('employee',employeeController::class);
+
 Route::resource('employee',employeeController::class);

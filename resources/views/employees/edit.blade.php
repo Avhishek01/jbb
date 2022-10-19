@@ -126,7 +126,7 @@
         </div>
     @endif
   
-    <form action="{{ route('employee.update',$employee->id) }}" method="POST">
+    <form action="{{ route('employee.update',$employee->id) }}" method="POST">   
         @csrf
         @method('PUT')
         <span style="color: red">@error('Name'){{$message}}@enderror</span>

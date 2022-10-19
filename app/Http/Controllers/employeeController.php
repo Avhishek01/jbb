@@ -60,56 +60,54 @@ class employeeController extends Controller
     /**
      * Display the specified resource.
      *
-     *
+     * @param  \App\employe  $employee
      * @return \Illuminate\Http\Response
      */
    
-    public function edit($id)
-    {
-        
-        $employee = DB::table('employee')->where('id',$id)->first();
-        
+    public function edit(employe $employee)
+    { 
+       if($employee->employee_id != Auth::id()){
+        abort(403);
+       }
+       
+        return view ('employees.edit', compact('employee'));
       
-        
-        
-            return view ('employees.edit', compact('employee'));
-        
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     *@param  \App\employe  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, employe $employee)
     {
-        $validate = $request->validate([
+         $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
             'profile'=> 'required'
         ]);
-    
-        DB::table('employee')->where ('id', $id)->update([
-            'Name'=>$request->Name,
-            'email'=>$request->email,
-            'profile'=>$request->profile,
-        ]);
-        return redirect('employee')->with('status', 'Profile updated!');
+        // dd($request->id);
+        $employee->update($request->all());
+        return redirect()->route('employee.index')->with('status', 'Profile updated!');
         
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     *  @param  \App\employe  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(employe $employee)
     {
-        DB::table('employee')->where('id', $id)->delete();
-        return back()->with('post dleted sucessfully');
+        
+        if($employee->employee_id != Auth::id()){
+            abort(403);
+           }
+        $employee->delete();
+        return redirect()->route('employee.index')->with('post dleted sucessfully');
     }
 
 }
