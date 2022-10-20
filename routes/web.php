@@ -33,4 +33,4 @@ Route::get('/greeting', function () {
 //Route::post('create',[employeeController::class,'store']);
 //Route::resource('employee',employeeController::class);
 
-Route::resource('employee',employeeController::class);
+Route::resource('employee',employeeController::class)->middleware(['CustomAuth']);

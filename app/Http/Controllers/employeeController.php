@@ -42,7 +42,7 @@ class employeeController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'Name'=> 'required|alpha',
+            'Name'=> 'required',
             'email'=> 'required|email',
             'profile'=> 'required'
         ]);
@@ -88,8 +88,11 @@ class employeeController extends Controller
             'email'=> 'required|email',
             'profile'=> 'required'
         ]);
-        // dd($request->id);
+        
         $employee->update($request->all());
+        if($employee->employee_id != Auth::id()){
+            abort(403);
+           }
         return redirect()->route('employee.index')->with('status', 'Profile updated!');
         
     }

@@ -12,7 +12,13 @@ class CustomAuth
 
     public function handle(Request $request, Closure $next)
     {
-        
-           return $next($request);
+        if (Auth::check()) {
+            // The user is logged in...
+            return $next($request);
+        }
+       else
+       {
+            return redirect('login');
+       }
     }
 }

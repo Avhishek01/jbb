@@ -101,7 +101,21 @@
 </nav>
 <BR>
     <BR>
-@extends('employees.layout')
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <meta name="csrf-token" content="{{ csrf_token() }}">
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <title>Document</title>
+        </head>
+        <body>
+    @extends('employees.layout')
+<script src="sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+
 
 @section('content')
     <div class="row">
@@ -140,15 +154,46 @@
                     <a class="btn btn-primary" href="{{ route('employee.edit',$employee->id) }}">Edit</a>
    
                     @csrf
-                    @method('DELETE')
-      
-                    <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
+                    <input name="_method" type="hidden" value="DELETE">
+                    <button type="submit" class="btn btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>Delete</button>
                 </form>
             </td>
         </tr>
         @endforeach
-    </table>
-  
-  
-      
+    
+</body>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
+    
+ 
+        $('.show_confirm').click(function(event) {
+             var form =  $(this).closest("form");
+             var name = $(this).data("name");
+             event.preventDefault();
+             Swal.fire({
+             title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            })
+
+            .then((result) => {
+                if (result.isConfirmed) {
+                    form.submit()
+                Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+                    )
+                }
+            })
+         });
+     
+   </script>
+  </table>
+</html>     
 @endsection
