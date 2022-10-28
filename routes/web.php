@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\employeeController;
+use App\Http\Controllers\EmployeeController;
+
 use Illuminate\Http\Request;
 
 /*
@@ -33,4 +34,4 @@ Route::get('/greeting', function () {
 //Route::post('create',[employeeController::class,'store']);
 //Route::resource('employee',employeeController::class);
 
-Route::resource('employee',employeeController::class)->middleware(['auth','CustomAuth']);
+Route::resource('employee',EmployeeController::class)->middleware(['auth','CustomAuth']);

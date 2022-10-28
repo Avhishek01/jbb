@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Session;
-use App\Models\employe;
+use App\Models\Employe;
 use Illuminate\Support\Facades\Auth;
 
 class CustomAuth

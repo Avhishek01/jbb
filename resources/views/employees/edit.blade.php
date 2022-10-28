@@ -131,10 +131,13 @@
         @method('PUT')
         <span style="color: red">@error('Name'){{$message}}@enderror</span>
         NAME: <input type="text" name="Name" placeholder="enter your name" value="{{$employee->name}}"><br><br>
-        Email: <input type="text" name="email" placeholder="enter your name" value="{{$employee->email}}"><br><br>
         <span style="color: red">@error('email'){{$message}}@enderror</span>
-        Profile: <input type="text" name="profile" placeholder="enter your name" value="{{$employee->profile}}"><br><br>
+        Email: <input type="text" name="email" placeholder="enter your name" value="{{$employee->email}}"><br><br>
         <span style="color: red">@error('profile'){{$message}}@enderror</span>
+        Profile: <input type="text" name="profile" placeholder="enter your name" value="{{$employee->profile}}"><br><br>
+        <span style="color: red">@error('age'){{$message}}@enderror</span>
+        Age: <input type="text" name="age" placeholder="enter your age" value="{{$employee->age}}"><br><br>
+       
         <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
        
     </form>

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\employe;
+use App\Models\Employe;
+use App\Models\User;
 use DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,10 +17,11 @@ class employeeController extends Controller
      */
     public function index()
     {
-        $id=Auth::user()->id;
-        
-        $employees = employe::latest()->where('employee_id','=',$id)->paginate(10);
-  
+        $user = Auth::user();
+        $employees = $user->employees;
+       
+         // $id = Auth::user()->id;
+       // $employees = Employe::latest()->where('employee_id','=',$id)->paginate(10);
         return view('employees.index',compact('employees'));
     }
 
@@ -44,12 +46,15 @@ class employeeController extends Controller
         $validate = $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
-            'profile'=> 'required'
+            'profile'=> 'required',
+            'age'=> 'required'
+            
         ]);
-        $employee = new employe;
+        $employee = new Employe;
         $employee->Name=$request->Name;
         $employee->email=$request->email;
         $employee->profile=$request->profile;
+        $employee->age=$request->age;
         $employee->employee_id=auth()->user()->id;
         $employee->save();
         
@@ -64,7 +69,7 @@ class employeeController extends Controller
      * @return \Illuminate\Http\Response
      */
    
-    public function edit(employe $employee)
+    public function edit(Employe $employee)
     { 
        if($employee->employee_id != Auth::id()){
         abort(403);
@@ -81,12 +86,13 @@ class employeeController extends Controller
      *@param  \App\employe  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, employe $employee)
+    public function update(Request $request, Employe $employee)
     {
          $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
-            'profile'=> 'required'
+            'profile'=> 'required',
+            'age'=> 'required'
         ]);
         
         $employee->update($request->all());
@@ -103,7 +109,7 @@ class employeeController extends Controller
      *  @param  \App\employe  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(employe $employee)
+    public function destroy(Employe $employee)
     {
         
         if($employee->employee_id != Auth::id()){
