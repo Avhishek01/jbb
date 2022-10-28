@@ -137,6 +137,8 @@
         Profile: <input type="text" name="profile" placeholder="enter your name" value="{{$employee->profile}}"><br><br>
         <span style="color: red">@error('age'){{$message}}@enderror</span>
         Age: <input type="text" name="age" placeholder="enter your age" value="{{$employee->age}}"><br><br>
+        <span style="color: red">@error('gender'){{$message}}@enderror</span>
+        Gender: <input type="text" name="gender" placeholder="enter your gender" value="{{$employee->gender}}"><br><br>
        
         <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
        

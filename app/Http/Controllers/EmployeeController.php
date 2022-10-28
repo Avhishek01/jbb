@@ -47,7 +47,8 @@ class employeeController extends Controller
             'Name'=> 'required',
             'email'=> 'required|email',
             'profile'=> 'required',
-            'age'=> 'required'
+            'age'=> 'required|int',
+            'gender'=> 'required|alpha'
             
         ]);
         $employee = new Employe;
@@ -55,6 +56,7 @@ class employeeController extends Controller
         $employee->email=$request->email;
         $employee->profile=$request->profile;
         $employee->age=$request->age;
+        $employee->gender=$request->gender;
         $employee->employee_id=auth()->user()->id;
         $employee->save();
         
@@ -92,7 +94,8 @@ class employeeController extends Controller
             'Name'=> 'required',
             'email'=> 'required|email',
             'profile'=> 'required',
-            'age'=> 'required'
+            'age'=> 'required|int',
+            'gender'=>'required|alpha'
         ]);
         
         $employee->update($request->all());

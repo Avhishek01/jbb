@@ -141,6 +141,7 @@
             <th>Email</th>
             <th>Profile</th>
             <th>Age</th>
+            <th>Gender</th>
             <th width="250px">Action</th>
         </tr>
         @foreach ($employees as $employee)
@@ -150,6 +151,7 @@
             <td>{{ $employee->email }}</td>
             <td>{{ $employee->profile }}</td>
             <td>{{$employee->age}}</td>
+            <td>{{$employee->gender}}</td>
             <td>
                 <form action="{{ route('employee.destroy',$employee->id) }}" method="POST">
    
