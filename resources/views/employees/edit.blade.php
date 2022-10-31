@@ -126,7 +126,7 @@
         </div>
     @endif
   
-    <form action="{{ route('employee.update',$employee->id) }}" method="POST">   
+    <form action="{{ route('employee.update',$employee->id , $mobile->id ) }}" method="POST">   
         @csrf
         @method('PUT')
         <span style="color: red">@error('Name'){{$message}}@enderror</span>
@@ -138,7 +138,16 @@
         <span style="color: red">@error('age'){{$message}}@enderror</span>
         Age: <input type="text" name="age" placeholder="enter your age" value="{{$employee->age}}"><br><br>
         <span style="color: red">@error('gender'){{$message}}@enderror</span>
-        Gender: <input type="text" name="gender" placeholder="enter your gender" value="{{$employee->gender}}"><br><br>
+        <label for="gender">Choose a Gender:</label>
+        <select name="gender">
+          <option value="Male">Male</option>
+          <option value="Female">female</option>
+        </select>
+        <br><br>
+        <span style="color: red">@error('number'){{$message}}@enderror</span>
+        Number-1: <input type="number" name="number" placeholder="enter your Mobile Number" value="{{$mobile->number}}"><br><br>
+        <span style="color: red">@error('number'){{$message}}@enderror</span>
+        Number-2: <input type="number" name="number" placeholder="enter your Mobile Number" value="{{$mobile->number}}"><br><br>
        
         <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
        

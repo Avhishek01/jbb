@@ -20,4 +20,9 @@ class Employe extends Model
          //return $this->belongsTo(User::class, 'foreign_key', 'local_key');
      }
 
+     public function mobiles()
+     {
+         return $this->hasMany(Mobile::class , 'employee_id');
+         //return $this->hasMany(Employe::class, 'foreign_key', 'local_key');
+     }
 }

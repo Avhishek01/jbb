@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employe;
+use App\Models\Mobile;
 use App\Models\User;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -43,12 +44,14 @@ class employeeController extends Controller
      */
     public function store(Request $request)
     {
+       
         $validate = $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
             'profile'=> 'required',
             'age'=> 'required|int',
-            'gender'=> 'required|alpha'
+            'gender'=> 'required',
+            
             
         ]);
         $employee = new Employe;
@@ -58,7 +61,16 @@ class employeeController extends Controller
         $employee->age=$request->age;
         $employee->gender=$request->gender;
         $employee->employee_id=auth()->user()->id;
+          
         $employee->save();
+
+            Mobile::make([
+                'number' => $request->number
+            ]);
+            $mobile = new Mobile;
+            $mobile->number = $request->number;
+            $employee->mobiles()->save($mobile);
+        
         
         return redirect('employee')->with('status', 'Profile updated!');
        
@@ -68,10 +80,11 @@ class employeeController extends Controller
      * Display the specified resource.
      *
      * @param  \App\employe  $employee
+     *  @param  \App\Mobile  $mobile
      * @return \Illuminate\Http\Response
      */
    
-    public function edit(Employe $employee)
+    public function edit(Employe $employee , Mobile $mobile)
     { 
        if($employee->employee_id != Auth::id()){
         abort(403);
@@ -86,16 +99,17 @@ class employeeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *@param  \App\employe  $employee
+     *@param  \App\Mobile  $mobile
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employe $employee)
+    public function update(Request $request, Employe $employee , Mobile $mobile)
     {
          $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
             'profile'=> 'required',
             'age'=> 'required|int',
-            'gender'=>'required|alpha'
+            'gender'=>'required'
         ]);
         
         $employee->update($request->all());
@@ -110,6 +124,7 @@ class employeeController extends Controller
      * Remove the specified resource from storage.
      *
      *  @param  \App\employe  $employee
+     * @param  \App\Mobile  $mobile
      * @return \Illuminate\Http\Response
      */
     public function destroy(Employe $employee)
@@ -119,6 +134,7 @@ class employeeController extends Controller
             abort(403);
            }
         $employee->delete();
+       
         return redirect()->route('employee.index')->with('post dleted sucessfully');
     }
 
