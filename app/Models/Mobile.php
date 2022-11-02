@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Mobile extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'number'
-    ];
+    // protected $fillable = [
+    //     'number', 
+    //     'employee_id'
+    // ];
+    protected $guarded = [];
+    
     public function employee()
     {
         return $this->belongsTo(Employe::class , 'employee_id');

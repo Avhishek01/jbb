@@ -146,9 +146,9 @@
     </select>
     <br><br>
     <span style="color: red">@error('number'){{$message}}@enderror</span>
-    Number-1: <input type="number" name="number" placeholder="enter your Mobile Number"><br><br>
+    Number-1: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
     <span style="color: red">@error('number'){{$message}}@enderror</span>
-    Number-2: <input type="number" name="number" placeholder="enter your Mobile Number"><br><br>
+    Number-2: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
 
     <button type="submit" style="background-color:chocolate; color:white; font-size:20px; border-radius: 3px;" >SUBMIT</button>
     <br><br>

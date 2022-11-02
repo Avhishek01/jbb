@@ -142,27 +142,36 @@
             <th>Profile</th>
             <th>Age</th>
             <th>Gender</th>
+            <th>Mobile-Number</th>
             <th width="250px">Action</th>
         </tr>
-        @foreach ($employees as $employee)
+        @foreach ($user->employees as $employee)
         <tr>
             
-            <td>{{ $employee->name }}</td>
-            <td>{{ $employee->email }}</td>
-            <td>{{ $employee->profile }}</td>
-            <td>{{$employee->age}}</td>
-            <td>{{$employee->gender}}</td>
+            <td>{{ $employee ->name }}</td>
+            <td>{{ $employee ->email }}</td>
+            <td>{{ $employee ->profile }}</td>
+            <td>{{$employee ->age}}</td>
+            <td>{{$employee ->gender}}</td>
+          
+           
+            @foreach($employee->mobiles as $mobile)
+            <td>{{$mobile ->number}}</td>
+            @endforeach
+            
             <td>
-                <form action="{{ route('employee.destroy',$employee->id) }}" method="POST">
+                <form action="{{ route('employee.destroy',$employee ->id) }}" method="POST">
    
-                    <a class="btn btn-primary" href="{{ route('employee.edit',$employee->id) }}">Edit</a>
+                    <a class="btn btn-primary" href="{{ route('employee.edit',$employee ->id) }}">Edit</a>
    
                     @csrf
                     <input name="_method" type="hidden" value="DELETE">
                     <button type="submit" class="btn btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>Delete</button>
                 </form>
             </td>
+            
         </tr>
+        
         @endforeach
     
 </body>

@@ -17,13 +17,27 @@ class employeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $user = Auth::user();
-        $employees = $user->employees;
-       
+    {   
+        //alternate method when relation with more morethan three models
+
+        $user = User::with('employees.mobiles')
+        ->where('id', auth()->id())
+        ->first();
+        
+
+        return view('employees.index',compact('user'));
+        
+
+        // alternate method for only two person relation using models
+        // $user = Auth::user();
+        // $employees = $user->employees;
+        // return view('employees.index',compact('employees'));
+
+
+        //alternate method to show data by id
          // $id = Auth::user()->id;
        // $employees = Employe::latest()->where('employee_id','=',$id)->paginate(10);
-        return view('employees.index',compact('employees'));
+       // return view('employees.index',compact('employees'));
     }
 
     /**
@@ -44,7 +58,7 @@ class employeeController extends Controller
      */
     public function store(Request $request)
     {
-       
+       //dd($request->all());
         $validate = $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
@@ -64,12 +78,19 @@ class employeeController extends Controller
           
         $employee->save();
 
-            Mobile::make([
-                'number' => $request->number
-            ]);
-            $mobile = new Mobile;
-            $mobile->number = $request->number;
+        for($i = 0; $i < count($request->input('number')); $i++) {
+          // Mobile::create([
+           //  'number' => $request->input('number')[$i],
+            // 'employee_id'=> $employee->id
+             //]);
+                //alternate method
+             $mobile = new Mobile;
+            $mobile->number = $request->number[$i];
             $employee->mobiles()->save($mobile);
+            
+         
+          }
+
         
         
         return redirect('employee')->with('status', 'Profile updated!');

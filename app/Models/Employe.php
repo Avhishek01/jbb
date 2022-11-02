@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Mobile;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Employe extends Model
   
@@ -12,6 +13,9 @@ class Employe extends Model
       use HasFactory;
      protected $table = 'employee';
      protected $guarded = [];
+     protected $fillable = [
+        'employee_id'
+    ];
 
      public function user()
      {
