@@ -126,9 +126,10 @@
         </div>
     @endif
   
-    <form action="{{ route('employee.update',$employee->id , $mobile->id ) }}" method="POST">   
+    <form action="{{ route('employee.update', $employee ->id ) }}" method="Post">   
         @csrf
         @method('PUT')
+       
         <span style="color: red">@error('Name'){{$message}}@enderror</span>
         NAME: <input type="text" name="Name" placeholder="enter your name" value="{{$employee->name}}"><br><br>
         <span style="color: red">@error('email'){{$message}}@enderror</span>
@@ -144,12 +145,14 @@
           <option value="Female">female</option>
         </select>
         <br><br>
+       @foreach($employee->mobiles as $mobile)
         <span style="color: red">@error('number'){{$message}}@enderror</span>
-        Number-1: <input type="number" name="number" placeholder="enter your Mobile Number" value="{{$mobile->number}}"><br><br>
-        <span style="color: red">@error('number'){{$message}}@enderror</span>
-        Number-2: <input type="number" name="number" placeholder="enter your Mobile Number" value="{{$mobile->number}}"><br><br>
-       
+        Number: <input type="number" name="number" placeholder="enter your Mobile Number" value="{{$mobile->number}}"><br><br>
+        
+        {{-- <span style="color: red">@error('number'){{$message}}@enderror</span> --}}
+        {{-- Number-2: <input type="number" name="number" placeholder="enter your Mobile Number" value="{{}}"><br><br> --}}
+        @endforeach
         <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
-       
+   
     </form>
 @endsection

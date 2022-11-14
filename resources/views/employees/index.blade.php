@@ -154,11 +154,11 @@
             <td>{{$employee ->age}}</td>
             <td>{{$employee ->gender}}</td>
           
-           
+            <td>
             @foreach($employee->mobiles as $mobile)
-            <td>{{$mobile ->number}}</td>
+            ({{$mobile ->number  }}),
             @endforeach
-            
+            </td>
             <td>
                 <form action="{{ route('employee.destroy',$employee ->id) }}" method="POST">
    
@@ -169,7 +169,7 @@
                     <button type="submit" class="btn btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>Delete</button>
                 </form>
             </td>
-            
+               
         </tr>
         
         @endforeach

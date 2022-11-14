@@ -100,17 +100,22 @@ class employeeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\employe  $employee
-     *  @param  \App\Mobile  $mobile
+     * @param  \App\Employe  $employee
+     *  
      * @return \Illuminate\Http\Response
      */
    
-    public function edit(Employe $employee , Mobile $mobile)
+    public function edit(Employe $employee , Request $request )
     { 
-       if($employee->employee_id != Auth::id()){
-        abort(403);
-       }
-       
+    
+    //    if($employee->employee_id != Auth::id()){
+    //     abort(403);
+    //    }
+       $employee = Employe::with('mobiles')
+       ->where('id', $employee->id)
+       ->first();
+       //dd($employee->toArray());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+
         return view ('employees.edit', compact('employee'));
       
     }
@@ -120,10 +125,10 @@ class employeeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *@param  \App\employe  $employee
-     *@param  \App\Mobile  $mobile
+    
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employe $employee , Mobile $mobile)
+    public function update(Request $request, Employe $employee)
     {
          $request->validate([
             'Name'=> 'required',
