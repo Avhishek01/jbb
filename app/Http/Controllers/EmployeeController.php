@@ -79,15 +79,15 @@ class employeeController extends Controller
         $employee->save();
 
         for($i = 0; $i < count($request->input('number')); $i++) {
-          // Mobile::create([
+            $mobile = new Mobile;
+            $mobile->number = $request->number[$i];
+            $employee->mobiles()
+            ->save($mobile);
+             //alternate method
+             // Mobile::create([
            //  'number' => $request->input('number')[$i],
             // 'employee_id'=> $employee->id
              //]);
-                //alternate method
-             $mobile = new Mobile;
-            $mobile->number = $request->number[$i];
-            $employee->mobiles()->save($mobile);
-            
          
           }
 
@@ -107,16 +107,15 @@ class employeeController extends Controller
    
     public function edit(Employe $employee , Request $request )
     { 
-    
-    //    if($employee->employee_id != Auth::id()){
-    //     abort(403);
-    //    }
        $employee = Employe::with('mobiles')
        ->where('id', $employee->id)
        ->first();
        //dd($employee->toArray());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
         return view ('employees.edit', compact('employee'));
+         //    if($employee->employee_id != Auth::id()){
+    //     abort(403);
+    //    }
       
     }
 
@@ -124,12 +123,16 @@ class employeeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     *@param  \App\employe  $employee
-    
+     *@param  \App\Employe $employee
+     *@param  \App\ $id
+    *@param  \App\Mobile $mobile
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employe $employee)
+    public function update(Request $request, Employe $employee  )
     {
+        // $number =[];
+
+        //  dd($request->all());
          $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
@@ -137,15 +140,54 @@ class employeeController extends Controller
             'age'=> 'required|int',
             'gender'=>'required'
         ]);
-        
-        $employee->update($request->all());
-        if($employee->employee_id != Auth::id()){
-            abort(403);
-           }
+        //dd($employee);
+       
+      
+       //dd($employee);
+       
+        $employee->Name = $request->Name ;
+        $employee->email = $request->email ;
+        $employee->profile = $request->profile ;
+        $employee->age = $request->age ;
+        $employee->gender = $request->gender ;
+        $employee->update();
+       
+       
+        //Alternate method
+        //  Employe::where('id',$id)
+        // ->update([
+        //     'Name'=> $request->Name,
+        //     'email'=>$request->email,
+        //     'profile'=>$request->profile,
+        //     'age'=>$request->age,
+        //     'gender'=>$request->gender,
+            
+            
+        // ]);
+        foreach($request->number as $key => $mobile){
+            
+            
+             Mobile::where('id', $key)
+             
+        ->update([
+            'number'=>$mobile,
+        ]);
+       }
         return redirect()->route('employee.index')->with('status', 'Profile updated!');
         
-    }
+        // if($employee->employee_id != Auth::id()){
+        //     abort(403);
+        //    }
+        // return redirect()->route('employee.index')->with('status', 'Profile updated!');
+        
+        // Mobile::where('id',$id)
+        // ->update([
+        //     'number'=>$request->number,
+        // ]);
 
+        
+    
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -153,7 +195,7 @@ class employeeController extends Controller
      * @param  \App\Mobile  $mobile
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employe $employee)
+     public function destroy(Employe $employee)
     {
         
         if($employee->employee_id != Auth::id()){

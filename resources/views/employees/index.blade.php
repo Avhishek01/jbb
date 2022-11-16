@@ -157,6 +157,7 @@
             <td>
             @foreach($employee->mobiles as $mobile)
             ({{$mobile ->number  }}),
+            
             @endforeach
             </td>
             <td>
