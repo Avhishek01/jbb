@@ -19,7 +19,21 @@ class employeeController extends Controller
     public function index()
     {   
         //alternate method when relation with more morethan three models
+        $users = User::all();
+        //filter method
+        // dd($users->filter(function($item){
+        //     return $item['name'][0] == 'M';
+        // })->toArray());
 
+        //group by method
+        // dd($users->groupBy('id')  );
+        // $users->all();
+
+        // where method
+        // dd($employee= $users->where('id' , 3 ));
+        // $employee->all();
+
+        
         $user = User::with('employees.mobiles')
         ->where('id', auth()->id())
         ->first();
@@ -165,7 +179,7 @@ class employeeController extends Controller
             
         // ]);
         foreach($request->number as $key => $mobile){
-            
+            // dd($mobile);
             
              Mobile::where('id', $key)
              
