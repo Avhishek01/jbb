@@ -135,20 +135,28 @@
     <span style="color: red">@error('email'){{$message}}@enderror</span>
     Email: <input type="text" name="email" placeholder="enter your name"><br><br>
     <span style="color: red">@error('profile'){{$message}}@enderror</span>
-    Profile: <input type="text" name="profile" placeholder="enter your name"><br><br>
+    <label for="profile">Profile:</label>
+    <select name="profile">
+        <option value=""></option>
+      <option value="SE">Software-Engineer</option>
+      <option value="JE">Junior-Engineer</option>
+      <option value="UI/UX">UI/UX Devloper</option>
+      <option value="LD">Laravel-Devloper</option>
+    </select><br><br>
     <span style="color: red">@error('age'){{$message}}@enderror</span>
     Age: <input type="number" name="age" placeholder="enter your age"><br><br>
     <span style="color: red">@error('gender'){{$message}}@enderror</span>
     <label for="gender">Choose a Gender:</label>
     <select name="gender">
+        <option value=""></option>
       <option value="Male">Male</option>
       <option value="Female">female</option>
     </select>
     <br><br>
     <span style="color: red">@error('number'){{$message}}@enderror</span>
-    Number-1: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
+    Number-1: <input type="text" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
     <span style="color: red">@error('number'){{$message}}@enderror</span>
-    Number-2: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
+    Number-2: <input type="text" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
 
     <button type="submit" style="background-color:chocolate; color:white; font-size:20px; border-radius: 3px;" >SUBMIT</button>
     <br><br>

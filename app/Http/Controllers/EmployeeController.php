@@ -8,6 +8,7 @@ use App\Models\Mobile;
 use App\Models\User;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\NumberRule;
 
 class employeeController extends Controller
 {
@@ -17,17 +18,18 @@ class employeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    { 
         //alternate method when relation with more morethan three models
         $users = User::all();
+      
         //filter method
         // dd($users->filter(function($item){
         //     return $item['name'][0] == 'M';
         // })->toArray());
 
         //group by method
-        // dd($users->groupBy('id')  );
-        // $users->all();
+        //dd($users->groupBy('id')  );
+        //$users->all();
 
         // where method
         // dd($employee= $users->where('id' , 3 ));
@@ -73,15 +75,18 @@ class employeeController extends Controller
     public function store(Request $request)
     {
        //dd($request->all());
+       
         $validate = $request->validate([
             'Name'=> 'required',
             'email'=> 'required|email',
-            'profile'=> 'required',
+            'profile'=> ['required'],
             'age'=> 'required|int',
             'gender'=> 'required',
-            
-            
+            // 'number.*'=>['required', 'max:10'],
+      
         ]);
+        
+
         $employee = new Employe;
         $employee->Name=$request->Name;
         $employee->email=$request->email;
@@ -121,18 +126,57 @@ class employeeController extends Controller
    
     public function edit(Employe $employee , Request $request )
     { 
-       $employee = Employe::with('mobiles')
-       ->where('id', $employee->id)
-       ->first();
-       //dd($employee->toArray());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        $employee = Employe::with('mobiles')
+        ->where('id', $employee->id)
+        ->first();
+        //dd($employee->toArray());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        
+     //    dd($employee);
+         return view ('employees.edit', compact('employee'));
+          //    if($employee->employee_id != Auth::id()){
+     //     abort(403);
+     //    }
+       
+     }
+ 
+        //path tells the only path 
+        // $users = $request->path();
+        // dd($users);
 
-        return view ('employees.edit', compact('employee'));
-         //    if($employee->employee_id != Auth::id()){
-    //     abort(403);
-    //    }
+        // is method gives true or false value path pattern is true or false
+        // $users=($request->is('employee/*'));
+        // dd($users);
+
+        // routeis method also tells the path true or false
+        // $users=($request->routeIs('employee.*'));
+        // dd($users);
+
+        // to get complete url address
+        // $users = $request->url();
+        // dd($users);
+        // $users = $request->fullUrl();
+        // dd($users );
+
+        // mrthod tells the its post or get
+        // $method = $request->method();
+        // dd($method);
+        // its sends the header information as raw data
+        // $value = $request->header('User-Agent');
+        // dd($value);
+
+        // it tells us about the ip address
+        // $users =$request->ip();
+        // dd($users);
+
+        // return an array containing all of the content types accepted by the request: we can use also prefer method
+        // $users = $request->getAcceptableContentTypes();
+        // dd($users);
+
+        // to get all data of file
+        // $employee=$request->all();
+        // dd($employee);
+
       
-    }
-
     /**
      * Update the specified resource in storage.
      *

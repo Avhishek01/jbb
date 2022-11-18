@@ -91,6 +91,20 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'redis' => [
+ 
+            'client' => env('REDIS_CLIENT', 'predis'),
+         
+            'default' => [
+                'scheme' => 'tls',
+                'host' => env('REDIS_HOST', '127.0.0.1'),
+                'password' => '',
+                'port' => env('REDIS_PORT', 6379),
+                'database' => env('REDIS_DB', 0),
+            ],
+         
+        ],
+
     ],
 
     /*

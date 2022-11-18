@@ -135,21 +135,35 @@
         <span style="color: red">@error('email'){{$message}}@enderror</span>
         Email: <input type="text" name="email" placeholder="enter your name" value="{{$employee->email}}"><br><br>
         <span style="color: red">@error('profile'){{$message}}@enderror</span>
-        Profile: <input type="text" name="profile" placeholder="enter your name" value="{{$employee->profile}}"><br><br>
+        <label for="profile">Profile:</label>
+    <select name="profile">
+       
+      <option value="SE">Software-Engineer</option>
+      <option value="JE">Junior-Engineer</option>
+      <option value="UI/UX">UI/UX Devloper</option>
+      <option value="LD">Laravel-Devloper</option>
+    </select><br><br>
         <span style="color: red">@error('age'){{$message}}@enderror</span>
         Age: <input type="text" name="age" placeholder="enter your age" value="{{$employee->age}}"><br><br>
         <span style="color: red">@error('gender'){{$message}}@enderror</span>
         <label for="gender">Choose a Gender:</label>
         <select name="gender">
+          
           <option value="Male">Male</option>
           <option value="Female">female</option>
-        </select>
-        <br><br>
-        @foreach($employee->mobiles as $mobile)
+        </select><br><br>
+        
+         {{-- <span style="color: red">@error('number'){{$message}}@enderror</span>
+         Number-1: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
         <span style="color: red">@error('number'){{$message}}@enderror</span>
-        Number: <input type="number" name="number[{{$mobile->id}}]" placeholder="enter your Mobile Number" value={{$mobile->number}}><br><br>
-         {{-- {{dd($mobile)}}  --}}
-        @endforeach
+        Number-2: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>  --}}
+        
+        @foreach($employee->mobiles as $mobile )
+        <span style="color: red">@error('number'){{$message}}@enderror</span>
+        Number: <input type="number" name="number[{{$mobile ->id}}]" placeholder="enter your Mobile Number" value={{$mobile ->number}}><br><br>
+        
+         @endforeach
+
         <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
    
     </form>
