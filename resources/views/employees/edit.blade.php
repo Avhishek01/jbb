@@ -153,16 +153,16 @@
           <option value="Female">female</option>
         </select><br><br>
         
-         {{-- <span style="color: red">@error('number'){{$message}}@enderror</span>
+          <span style="color: red">@error('number'){{$message}}@enderror</span>
          Number-1: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
         <span style="color: red">@error('number'){{$message}}@enderror</span>
-        Number-2: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>  --}}
+        Number-2: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>  
         
-        @foreach($employee->mobiles as $mobile )
+        {{-- @foreach($employee->mobiles as $mobile )
         <span style="color: red">@error('number'){{$message}}@enderror</span>
         Number: <input type="number" name="number[{{$mobile ->id}}]" placeholder="enter your Mobile Number" value={{$mobile ->number}}><br><br>
         
-         @endforeach
+         @endforeach --}}
 
         <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
    

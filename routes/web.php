@@ -35,3 +35,6 @@ Route::get('/greeting', function () {
 //Route::resource('employee',employeeController::class);
 
 Route::resource('employee',EmployeeController::class)->middleware(['auth','CustomAuth']);
+
+//Route::resource('photos', PhotoController::class);
+Route::get('DataTable/employee',[EmployeeController::class ,'getEmployee'])->name('employee.DataTable');

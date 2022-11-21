@@ -9,19 +9,44 @@ use App\Models\User;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\NumberRule;
+use DataTables;
 
-class employeeController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index()
     { 
+       
+     return view('employees.index');
+    
+    }
+    public function getEmployee(Request $request){
+        
+        if ($request->ajax()) {
+            $employee = Employe::all();
+                return DataTables::of($employee)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> 
+                    <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
         //alternate method when relation with more morethan three models
-        $users = User::all();
-      
+        // $users = User::all();
+        // $user = User::with('employees.mobiles')
+        // ->where('id', auth()->id())
+        // ->first();
+        // dd($user);
+       
         //filter method
         // dd($users->filter(function($item){
         //     return $item['name'][0] == 'M';
@@ -35,14 +60,6 @@ class employeeController extends Controller
         // dd($employee= $users->where('id' , 3 ));
         // $employee->all();
 
-        
-        $user = User::with('employees.mobiles')
-        ->where('id', auth()->id())
-        ->first();
-        
-
-        return view('employees.index',compact('user'));
-        
 
         // alternate method for only two person relation using models
         // $user = Auth::user();
@@ -54,7 +71,7 @@ class employeeController extends Controller
          // $id = Auth::user()->id;
        // $employees = Employe::latest()->where('employee_id','=',$id)->paginate(10);
        // return view('employees.index',compact('employees'));
-    }
+    
 
     /**
      * Show the form for creating a new resource.

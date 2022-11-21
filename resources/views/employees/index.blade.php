@@ -109,7 +109,16 @@
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <meta name="csrf-token" content="{{ csrf_token() }}">
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+            <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+            <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+            <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
             <title>Document</title>
+
         </head>
         <body>
     @extends('employees.layout')
@@ -128,14 +137,11 @@
             </div>
         </div>
     </div><BR><BR>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+   <body>
    
-    @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif
-   
-    <table class="table table-bordered">
+    <table class=" yajra-datatable">
         <tr>
             <th>Name</th>
             <th>Email</th>
@@ -145,7 +151,35 @@
             <th>Mobile-Number</th>
             <th width="250px">Action</th>
         </tr>
-        @foreach ($user->employees as $employee)
+    
+        <script type="text/javascript">
+            $(function () {
+              
+              var table = $('.yajra-datatable').DataTable({
+                  processing: true,
+                  serverSide: true,
+                  ajax: "{{ route('employee.DataTable') }}",
+                  columns: [
+                   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                      {data: 'name', name: 'Name'},
+                      {data: 'email', name: 'email'},
+                      {data: 'profile', name: 'profile'},
+                      {data: 'gender', name: 'gender'},
+                      {data: 'number[]', name: 'number[]'},
+                    
+                      {
+                          data: 'action', 
+                          name: 'action', 
+                          orderable: true, 
+                          searchable: true
+                      },
+                  ]
+              });
+              
+            });
+        </script>
+    </table>
+        {{-- @foreach ($user->employees as $employee)
         <tr>
             
             <td>{{ $employee ->name }}</td>
@@ -174,7 +208,8 @@
         </tr>
         
         @endforeach
-    
+     --}}
+
 </body>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
