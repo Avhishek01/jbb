@@ -27,17 +27,27 @@ class EmployeeController extends Controller
     public function getEmployee(Request $request){
         
         if ($request->ajax()) {
-            $employee = Employe::all();
-                return DataTables::of($employee)
+            $employees = Employe::with('mobiles')->get();
+            // dd($employees);
+                return DataTables::of($employees)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
+                ->addColumn('action', function($employee){
                     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> 
                     <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;
                 })
+                ->addColumn('number' , function($employee ){
+                    $number =[];
+                    foreach($employee->mobiles as $key => $value){
+                        $number[] = $value['number'];
+                    }
+                       return implode(', ', $number);
+                })
+                ->rawcolumns(['number'])
                 ->rawColumns(['action'])
                 ->make(true);
         }
+     
     }
 
         //alternate method when relation with more morethan three models
@@ -46,6 +56,19 @@ class EmployeeController extends Controller
         // ->where('id', auth()->id())
         // ->first();
         // dd($user);
+
+      // alternate method for only two person relation using models
+         // $user = Auth::user();
+        // $employees = $user->employees;
+        // return view('employees.index',compact('employees'));
+
+
+        //alternate method to show data by id
+         // $id = Auth::user()->id;
+       // $employees = Employe::latest()->where('employee_id','=',$id)->paginate(10);
+       // return view('employees.index',compact('employees'));
+    
+
        
         //filter method
         // dd($users->filter(function($item){

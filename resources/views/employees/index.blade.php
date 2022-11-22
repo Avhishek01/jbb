@@ -117,10 +117,21 @@
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
             <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
             <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-            <title>Document</title>
-
+            {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+           
+             <title>Document</title> 
+            {{-- <title>Laravel 9 Yajra Datatables Tutorial - ItSolutionStuff.com</title>
+            <meta name="csrf-token" content="{{ csrf_token() }}">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>  
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+            <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+            <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script> --}}
         </head>
-        <body>
+    
     @extends('employees.layout')
 <script src="sweetalert2.all.min.js"></script>
 <link rel="stylesheet" href="sweetalert2.min.css">
@@ -139,46 +150,53 @@
     </div><BR><BR>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-   <body>
+<body>
    
-    <table class=" yajra-datatable">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Profile</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Mobile-Number</th>
-            <th width="250px">Action</th>
-        </tr>
-    
+    <table class="table table-bordered yajra-datatable">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Profile</th>
+                <th>Gender</th>
+                <th>Mobile-Number</th>
+                <th width="200px">Action</th>
+               
+            </tr>
+            <tbody>
+            </tbody>
+     
+    </table>
+</body>
         <script type="text/javascript">
             $(function () {
               
               var table = $('.yajra-datatable').DataTable({
                   processing: true,
                   serverSide: true,
-                  ajax: "{{ route('employee.DataTable') }}",
+                  ajax: "{{ route('employee.Datatable') }}",
                   columns: [
-                   {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                      {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                       {data: 'name', name: 'Name'},
                       {data: 'email', name: 'email'},
                       {data: 'profile', name: 'profile'},
                       {data: 'gender', name: 'gender'},
-                      {data: 'number[]', name: 'number[]'},
+                      {data: 'number', name: 'number'},
                     
                       {
                           data: 'action', 
                           name: 'action', 
                           orderable: true, 
-                          searchable: true
+                          searchable: true,
+                          number:true
                       },
                   ]
               });
               
             });
         </script>
-    </table>
+   
         {{-- @foreach ($user->employees as $employee)
         <tr>
             
@@ -210,9 +228,9 @@
         @endforeach
      --}}
 
-</body>
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   
     <script type="text/javascript">
     
  
@@ -243,6 +261,6 @@
          });
      
    </script>
-  </table>
+
 </html>     
 @endsection
