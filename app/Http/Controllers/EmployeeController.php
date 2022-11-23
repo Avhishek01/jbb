@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Employe;
-use App\Models\Mobile;
-use App\Models\User;
 use DB;
-use Illuminate\Support\Facades\Auth;
-use App\Rules\NumberRule;
+use id;
 use DataTables;
+use App\Models\User;
+use App\Models\Mobile;
+use App\Models\Employe;
+use App\Rules\NumberRule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -28,14 +29,16 @@ class EmployeeController extends Controller
         
         if ($request->ajax()) {
             $employees = Employe::with('mobiles')->get();
-            // dd($employees);
+           
                 return DataTables::of($employees)
                 ->addIndexColumn()
-                ->addColumn('action', function($employee){
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> 
-                    <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                ->addColumn('action', function($employees){
+                    $actionBtn = '<a href="employee/'.$employees->id .'/edit" class="edit btn btn-success btn-sm" id="'.$employees->id.'" >Edit</a>
+                                <a href="employee/'.$employees->id.'" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;
+                 
                 })
+                //id="'.$employees->id.'"
                 ->addColumn('number' , function($employee ){
                     $number =[];
                     foreach($employee->mobiles as $key => $value){
@@ -164,21 +167,27 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
    
-    public function edit(Employe $employee , Request $request )
+    public function edit(Request $request ,Employe $employee )
     { 
-        $employee = Employe::with('mobiles')
+
+        
+        // if(request()->ajax())
+        // {
+        //     $data = Employe::findOrFail($id);
+        //     dd($data);
+        //     return response()->json(['result' => $data]);
+        // }
+
+            $employee = Employe::with('mobiles')
         ->where('id', $employee->id)
         ->first();
-        //dd($employee->toArray());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-        
-     //    dd($employee);
-         return view ('employees.edit', compact('employee'));
-          //    if($employee->employee_id != Auth::id()){
-     //     abort(403);
-     //    }
-       
-     }
- 
+        //  dd($employee);
+        return view ('employees.edit', compact('employee'));
+    }
+
+
+
+
         //path tells the only path 
         // $users = $request->path();
         // dd($users);
@@ -296,11 +305,12 @@ class EmployeeController extends Controller
      public function destroy(Employe $employee)
     {
         
-        if($employee->employee_id != Auth::id()){
-            abort(403);
-           }
+        // if($employee->employee_id != Auth::id()){
+        //     abort(403);
+        //    }
+        $employee = Employe::with('mobiles');
         $employee->delete();
-       
+       //dd($employee);
         return redirect()->route('employee.index')->with('post dleted sucessfully');
     }
 

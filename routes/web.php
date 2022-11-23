@@ -35,7 +35,6 @@ Route::get('/greeting', function () {
 //Route::resource('employee',employeeController::class);
 
 Route::resource('employee',EmployeeController::class)->middleware(['auth','CustomAuth']);
-
-//Route::resource('photos', PhotoController::class);
 Route::get('Datatable/employee',[EmployeeController::class ,'getEmployee'])->name('employee.Datatable');
-
+// Route::get('/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('edit');
+// Route::post('employee/update', [EmployeeController::class, 'update'])->name('users.update');
