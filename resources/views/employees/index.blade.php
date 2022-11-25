@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+{{-- <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <link href="/css/app.css" rel="stylesheet">
     <script src="{{ asset('/js/app.js')}}"></script>
     <!-- Primary Navigation Menu -->
@@ -98,9 +98,10 @@
             </div>
         </div>
     </div>
-</nav>
-<BR>
-    <BR>
+</nav> --}}
+<x-app-layout>
+   
+
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -108,6 +109,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <meta name="csrf-token" content="{{ csrf_token() }}">
+            {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
@@ -125,14 +127,16 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
+        <div class="col-lg-6 margin-tb">
           
-            </div>
             <div class="pull-right">
                 <a class="btn btn-success" href="{{ route('employee.create') }}"> Create new employee</a>
+               
+              
             </div>
+          
         </div>
+       
     </div><BR><BR>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -183,7 +187,7 @@
             });
         </script>
    
-        {{-- @foreach ($user->employees as $employee)
+         {{-- @foreach ($user ->employees as $employee)
         <tr>
             
             <td>{{ $employee ->name }}</td>
@@ -211,45 +215,82 @@
                
         </tr>
         
-        @endforeach
-     --}}
-     {{-- <form action="{{ route('employee.destroy',$employee ->id) }}" method="POST">
-        @csrf
-        <input name="_method" type="hidden" value="DELETE">
-        
-    </form> --}}
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   
-    <script type="text/javascript">
-    
- 
-        $('.show_confirm').click(function(event) {
-             var form =  $(this).closest("form");
-             var name = $(this).data("name");
-             event.preventDefault();
-             Swal.fire({
-             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-            })
-
-            .then((result) => {
-                if (result.isConfirmed) {
-                    form.submit()
-                Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-                    )
-                }
-            })
-         });
+        @endforeach --}}
      
-   </script>
+    
+        
+    
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    
+    <script type="text/javascript">
+       
+        $(document).on('click','.show_confirm', function(event)
+        {
+           
+            Swal.fire({
+                         title:'Are you sure?',
+                         html:'You want to <b>delete</b> this Employee',
+                         showCancelButton:true,
+                         showCloseButton:true,
+                         cancelButtonText:'Cancel',
+                         confirmButtonText:'Yes, Delete',
+                         cancelButtonColor:'#d33',
+                         confirmButtonColor:'#556ee6',
+                         width:300,
+                         allowOutsideClick:false
+            
+            }).then((result) => 
+            {
+                 if (result.isConfirmed) 
+                {
+                    var empId = $(this).data('id');
 
-</html>     
-@endsection
+                    var url = "employee/"+ empId
+                    console.log(url);
+                   //alert(Emp_id);
+                    $.ajax({
+                        url    : url,
+                        headers: {
+                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                        type : "delete",
+                        success: function(response) {                                      
+                         $('.yajra-datatable').DataTable().ajax.reload(null , false);
+                        },
+                        error: function(){
+                            
+                        }
+                    });
+                 
+                }
+            
+            });
+        
+        });   
+    </script>
+
+</x-app-layout>
+</html>
+
+ {{-- // $(document).on('click','.show_confirm', function(){
+    //  var Emp_id = $(this).data('id');
+  
+    //  $element = document.getElementBytag("td");
+    // dd($element);
+    // element.addEventListener("click", myFunction);
+
+    // function myFunction() {
+    // document.getElementByclass("show_confirm"){ --}}
+{{-- 
+                          // get id of cliked record
+                         
+                          // hit ajax on delete route pass id in route url
+
+                                    //set method DELETE
+ // $employee = Employe::with('mobiles');
+                        //  $employee->delete();
+                        // return redirect()->route('employee.index')->with('post dleted sucessfully'    
+//  --}}
+
+ 

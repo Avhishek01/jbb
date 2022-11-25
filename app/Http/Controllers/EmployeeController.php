@@ -21,6 +21,10 @@ class EmployeeController extends Controller
      */
     public function index()
     { 
+          $users = User::all();
+        $user = User::with('employees.mobiles')
+        ->where('id', auth()->id())
+         ->first();
        
      return view('employees.index');
     
@@ -34,11 +38,11 @@ class EmployeeController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($employees){
                     $actionBtn = '<a href="employee/'.$employees->id .'/edit" class="edit btn btn-success btn-sm" id="'.$employees->id.'" >Edit</a>
-                                <a href="employee/'.$employees->id.'" class="delete btn btn-danger btn-sm">Delete</a>';
+                     <button  class="btn btn-xs btn-danger btn-flat show_confirm " data-id="'.$employees['id'].'" data-toggle="tooltip" >Delete</button>';
                     return $actionBtn;
                  
                 })
-                //id="'.$employees->id.'"
+               
                 ->addColumn('number' , function($employee ){
                     $number =[];
                     foreach($employee->mobiles as $key => $value){
@@ -97,6 +101,11 @@ class EmployeeController extends Controller
          // $id = Auth::user()->id;
        // $employees = Employe::latest()->where('employee_id','=',$id)->paginate(10);
        // return view('employees.index',compact('employees'));
+
+        //id="'.$employees->id.'"
+                // data_id ="'.$employees['id'].'"
+                // '.route(employee.destroy).'
+                // onclick="'.destroy('$employees->id').'"
     
 
     /**
@@ -302,16 +311,28 @@ class EmployeeController extends Controller
      * @param  \App\Mobile  $mobile
      * @return \Illuminate\Http\Response
      */
-     public function destroy(Employe $employee)
+     public function destroy( $id )
     {
         
-        // if($employee->employee_id != Auth::id()){
-        //     abort(403);
-        //    }
-        $employee = Employe::with('mobiles');
+        $employee = Employe::find($id);
+    
+        foreach ($employee->mobiles as $mobile){
+
+                $mobile->delete();
+        }
         $employee->delete();
-       //dd($employee);
         return redirect()->route('employee.index')->with('post dleted sucessfully');
     }
-
+       // if($employee->employee_id != Auth::id()){
+        //     abort(403);
+        //    }
+        // $Emp_id = $request->Emp_id;
+        // $query = Employe::find($Emp_id)->delete();
+        // 
+         //      $employee = Employe::with('mobiles');
+         // //    $employee->steps->each->delete();
+            // dd($employee);
+              //     $employee->delete();
+               //     return redirect()->route('employee.index')->with('post dleted sucessfully');
+                   //     //return response()->json(['data' => $employee], 200);
 }

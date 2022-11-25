@@ -17,7 +17,7 @@ class CreateMobilesTable extends Migration
             $table->id();
             $table->string('number');
             $table->unsignedBigInteger('employee_id')->default();
-            $table->foreign('employee_id')->references('id')->on('employee');
+            $table->foreign('employee_id')->references('id')->on('employee')->onDelete('cascade');
             $table->timestamps();
         });
     }
