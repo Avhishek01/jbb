@@ -21,10 +21,10 @@ class EmployeeController extends Controller
      */
     public function index()
     { 
-          $users = User::all();
-        $user = User::with('employees.mobiles')
-        ->where('id', auth()->id())
-         ->first();
+        //   $users = User::all();
+        // $user = User::with('employees.mobiles')
+        // ->where('id', auth()->id())
+        //  ->first();
        
      return view('employees.index');
     
@@ -38,7 +38,7 @@ class EmployeeController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($employees){
                     $actionBtn = '<a href="employee/'.$employees->id .'/edit" class="edit btn btn-success btn-sm" id="'.$employees->id.'" >Edit</a>
-                     <button  class="btn btn-xs btn-danger btn-flat show_confirm " data-id="'.$employees['id'].'" data-toggle="tooltip" >Delete</button>';
+                     <button  class="btn btn-sm btn-danger btn-flat show_confirm " data-id="'.$employees['id'].'" data-toggle="tooltip" >Delete</button>';
                     return $actionBtn;
                  
                 })
@@ -323,7 +323,11 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect()->route('employee.index')->with('post dleted sucessfully');
     }
-       // if($employee->employee_id != Auth::id()){
+      
+    
+    
+    
+    // if($employee->employee_id != Auth::id()){
         //     abort(403);
         //    }
         // $Emp_id = $request->Emp_id;
