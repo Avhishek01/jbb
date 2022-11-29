@@ -134,7 +134,8 @@ class EmployeeController extends Controller
             'profile'=> ['required'],
             'age'=> 'required|int',
             'gender'=> 'required',
-            // 'number.*'=>['required', 'max:10'],
+            "number.*" =>"required|max:10",
+         
       
         ]);
         
@@ -254,7 +255,9 @@ class EmployeeController extends Controller
             'email'=> 'required|email',
             'profile'=> 'required',
             'age'=> 'required|int',
-            'gender'=>'required'
+            'gender'=>'required',
+            "number.*" =>"required|max:10",
+           
         ]);
         //dd($employee);
        

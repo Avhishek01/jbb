@@ -112,6 +112,47 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {{-- // $(document).on('click','.show_confirm', function(){
     //  var Emp_id = $(this).data('id');
   
