@@ -126,7 +126,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-       //dd($request->all());
+        // dd($request->all());
        
         $validate = $request->validate([
             'Name'=> 'required',
@@ -147,9 +147,16 @@ class EmployeeController extends Controller
         $employee->age=$request->age;
         $employee->gender=$request->gender;
         $employee->employee_id=auth()->user()->id;
-          
-        $employee->save();
-
+       
+        $employee->is_active=$request->boolean('select');
+        // dd($request->boolean('select'));
+         $employee->save();
+         // if($employee){
+        //     $employee->is_active == 1;
+        //     $employee->save();
+        //  }elseif($employee){
+        //     $employee->is_active !=1;
+        //  }
         for($i = 0; $i < count($request->input('number')); $i++) {
             $mobile = new Mobile;
             $mobile->number = $request->number[$i];
@@ -269,7 +276,22 @@ class EmployeeController extends Controller
         $employee->profile = $request->profile ;
         $employee->age = $request->age ;
         $employee->gender = $request->gender ;
+        $employee->is_active=$request->boolean('select');
+        // if($request->has('select')){
+        //     $employee->is_active == '1';
+        // }else{
+        //     $employee->is_active == '0';
+        // }
+
+
         $employee->update();
+       //  dd($employee);
+        // if($employee){
+        //     $employee->is_active == 1;
+       
+        // }
+       
+        // $employee->is_active = isset($request['is_active']) ?  : '0' ? : '1';
        
        
         //Alternate method

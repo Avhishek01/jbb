@@ -12,11 +12,13 @@ class Employe extends Model
      
       use HasFactory;
      protected $table = 'employee';
+   
      protected $guarded = [];
      protected $fillable = [
-        'employee_id'
+        'employee_id',
+        'is_active'
     ];
-
+   
      public function user()
      {
          return $this->belongsTo(User::class , 'employee_id');

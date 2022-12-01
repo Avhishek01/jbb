@@ -1,33 +1,114 @@
-
-<br> 
-<br>
 @extends('employees.layout')
-   <center>
-@section('content')
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Edit Employee</h2>
+@Include('layouts.dashboard')
+<center>
+    @section('content')
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+
+        <body>
+        <br>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-lg-12 margin-tb">
+                    <div class="pull-center">
+                        <h2>Edit Employee</h2>
+                    </div>
+                    <br>
+
+
+                </div>
             </div>
-            <br>
-            
-           
-        </div>
-    </div>
-   
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Warning!</strong> Please check input field code<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+            <form action="{{ route('employee.update', $employee->id) }}" method="Post">
+                @csrf
+                @method('PUT')
+                <span id="form_result"></span>
+                <span style="color: red">
+                    @error('Name')
+                        {{ $message }}
+                    @enderror
+                </span>
+                NAME: <input type="text" name="Name" placeholder="enter your name"
+                    value="{{ $employee->name }}"><br><br>
+                <span style="color: red">
+                    @error('email')
+                        {{ $message }}
+                    @enderror
+                </span>
+                Email: <input type="text" name="email" placeholder="enter your name"
+                    value="{{ $employee->email }}"><br><br>
+                <span style="color: red">
+                    @error('profile')
+                        {{ $message }}
+                    @enderror
+                </span>
+                <label for="profile">Profile:</label>
+                <select name="profile">
+
+                    <option value="SE">Software-Engineer</option>
+                    <option value="JE">Junior-Engineer</option>
+                    <option value="UI/UX">UI/UX Devloper</option>
+                    <option value="LD">Laravel-Devloper</option>
+                </select><br><br>
+                <span style="color: red">
+                    @error('age')
+                        {{ $message }}
+                    @enderror
+                </span>
+                Age: <input type="text" name="age" placeholder="enter your age" value="{{ $employee->age }}"><br><br>
+                <span style="color: red">
+                    @error('gender')
+                        {{ $message }}
+                    @enderror
+                </span>
+                <label for="gender">Choose a Gender:</label>
+                <select name="gender">
+
+                    <option value="Male">Male</option>
+                    <option value="Female">female</option>
+                </select><br><br>
+
+                @foreach ($employee->mobiles as $mobile)
+                    <span style="color: red">
+                        @error('number')
+                            {{ $message }}
+                        @enderror
+                    </span>
+                    Number: <input type="text" name="number[{{ $mobile->id }}]" placeholder="enter your Mobile Number"
+                        value={{ $mobile->number }}><br><br>
                 @endforeach
-            </ul>
+                <p>Please select your Choice</p>
+                <label for="select">Is Active
+                <input type="hidden" value="0" name="select">
+                <input type="checkbox" name="select" @if(($employee->is_active == 1)) checked  >@endif
+                    
+                </label>
+                {{-- {{dd($employee->age)}} --}}
+                <br>
+                    
+                <button type="submit"
+                    style="background-color: coral; color:white; font-size:20px; border-radius: 3px;">UPDATE</button>
+
+            </form>
+        @endsection
         </div>
-    @endif
+    </body>
 
+    </html>
+  {{-- @if($request ->has('select')){
+                    $employee->is_active == @checked(true);
+                }@else{
+                    $employee->is_active == @checked(false);
+                }
+                @endif --}}
 
-  {{-- <!DOCTYPE html>
+    {{-- <!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -81,7 +162,7 @@
                     <option value="Female">female</option>
                     </select>
                 </div>
-                @foreach($employee->mobiles as $mobile )
+                @foreach ($employee->mobiles as $mobile)
                 <span style="color: red">@error('number'){{$message}}@enderror</span>
                 Number: <input type="number" name="number[{{$mobile ->id}}]" placeholder="enter your Mobile Number" value={{$mobile ->number}}><br><br>
                 @endforeach
@@ -99,7 +180,7 @@
     </div>
   </body>
   </html> --}}
-  {{-- <script type="text/javascript">
+    {{-- <script type="text/javascript">
    $(document).on('click', '.edit', function(event){
         event.preventDefault(); 
         var id = $(this).attr('id'); alert(id);
@@ -133,45 +214,4 @@
     });
   </script> --}}
 
-         <form action="{{ route('employee.update', $employee->id ) }}" method="Post">   
-        @csrf
-        @method('PUT')
-        <span id="form_result"></span>
-        <span style="color: red">@error('Name'){{$message}}@enderror</span>
-        NAME: <input type="text" name="Name" placeholder="enter your name" value="{{$employee->name}}"><br><br>
-        <span style="color: red">@error('email'){{$message}}@enderror</span>
-        Email: <input type="text" name="email" placeholder="enter your name" value="{{$employee->email}}"><br><br>
-        <span style="color: red">@error('profile'){{$message}}@enderror</span>
-        <label for="profile">Profile:</label>
-    <select name="profile">
-       
-      <option value="SE">Software-Engineer</option>
-      <option value="JE">Junior-Engineer</option>
-      <option value="UI/UX">UI/UX Devloper</option>
-      <option value="LD">Laravel-Devloper</option>
-    </select><br><br>
-        <span style="color: red">@error('age'){{$message}}@enderror</span>
-        Age: <input type="text" name="age" placeholder="enter your age" value="{{$employee->age}}"><br><br>
-        <span style="color: red">@error('gender'){{$message}}@enderror</span>
-        <label for="gender">Choose a Gender:</label>
-        <select name="gender">
-          
-          <option value="Male">Male</option>
-          <option value="Female">female</option>
-        </select><br><br>
-        
-          {{-- <span style="color: red">@error('number'){{$message}}@enderror</span>
-         Number-1: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>
-        <span style="color: red">@error('number'){{$message}}@enderror</span>
-        Number-2: <input type="number" name="number[]" placeholder="enter your Mobile Number" value="{{ old('number') }}"><br><br>  
-         --}}
-         @foreach($employee->mobiles as $mobile )
-        <span style="color: red">@error('number'){{$message}}@enderror</span>
-        Number: <input type="text" name="number[{{$mobile ->id}}]" placeholder="enter your Mobile Number" value={{$mobile ->number}}><br><br>
-        
-         @endforeach
 
-        <button type="submit" style="background-color: coral; color:white; font-size:20px; border-radius: 3px;" >UPDATE</button>
-   
-    </form> 
-@endsection

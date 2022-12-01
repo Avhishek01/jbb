@@ -1,0 +1,3 @@
+Add is_active column to employee table
+default value should be inactive
+

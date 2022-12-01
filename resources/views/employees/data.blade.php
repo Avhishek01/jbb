@@ -2,36 +2,29 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+   
 </head>
 
-@extends('employees.layout')
-
-
-
-@section('content')
-    <div class="row">
-        <div class="col-lg-6 margin-tb">
-
-            <div class="pull-left" style="margin-top: 40px">
-                <a class="btn btn-success" href="{{ route('employee.create') }}"> Create new employee</a>
-
-
-            </div>
-
-        </div>
-
-    </div><br>
-
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <body>
-
+    <div class="col-md-10 pull-right">
+        <div class="row">
+            <div class="col-lg-6 margin-tb">
+    
+                <div class="pull-left" style="margin-top: 40px">
+                    <a class="btn btn-success" href="{{ route('employee.create') }}"> Create new employee</a>
+    
+    
+                </div>
+    
+            </div>
+    
+        </div>
         <table class="table table-bordered yajra-datatable">
 
             <thead>
@@ -42,6 +35,8 @@
                     <th>Profile</th>
                     <th>Gender</th>
                     <th>Mobile-Number</th>
+                    <th>Age</th>
+                    <th>Active</th>
                     <th width="200px">Action</th>
 
                 </tr>
@@ -49,6 +44,7 @@
             </tbody>
 
         </table>
+    </div>
     </body>
     <script type="text/javascript">
         $(function() {
@@ -81,7 +77,14 @@
                         data: 'number',
                         name: 'number'
                     },
-
+                    {
+                        data: 'age',
+                        name: 'age'
+                    },
+                    {
+                        data: 'is_active',
+                        name: 'select'
+                    },
                     {
                         data: 'action',
                         name: 'action',
