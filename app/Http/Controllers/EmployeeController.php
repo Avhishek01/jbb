@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use id;
-use DataTables;
-use App\Models\User;
-use App\Models\Mobile;
 use App\Models\Employe;
-use App\Rules\NumberRule;
+use App\Models\Mobile;
+use App\Models\User;
+use DataTables;
+use id;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,97 +18,70 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { 
-        //   $users = User::all();
-        // $user = User::with('employees.mobiles')
-        // ->where('id', auth()->id())
-        //  ->first();
-       
-     return view('employees.index');
-    
+    {
+        return view('employees.index');
     }
-    public function getEmployee(Request $request){
-        
+    public function getEmployee(Request $request)
+    {
+
         if ($request->ajax()) {
-            $employees = Employe::with('mobiles')->get();
-           
-                return DataTables::of($employees)
-                ->addIndexColumn()
-                ->addColumn('action', function($employees){
-                    $actionBtn = '<a href="employee/'.$employees->id .'/edit" class="edit btn btn-success btn-sm" id="'.$employees->id.'" >Edit</a>
-                     <button  class="btn btn-sm btn-danger btn-flat show_confirm " data-id="'.$employees['id'].'" data-toggle="tooltip" >Delete</button>';
-                    return $actionBtn;
-                 
-                })
-               
-                ->addColumn('number' , function($employee ){
-                    $number =[];
-                    foreach($employee->mobiles as $key => $value){
-                        $number[] = $value['number'];
-                    }
-                       return implode(', ', $number);
-                })
-                ->rawcolumns(['number'])
-                ->rawColumns(['action'])
-                ->make(true);
+            
+            if ($request->gender == 'All'|| $request->profile =='Profile') {
+                $employees = Employe::with('mobiles')->get();
+            } elseif($request->gender == 'Male' || $request->profile =='SE') {
+                $employees = Employe::with('mobiles')->where('gender', $request->gender)->where('profile', $request->profile)->get();
+            }elseif($request->gender == 'Female' || $request->profile =='JE'){
+                $employees = Employe::with('mobiles')->where('gender', $request->gender)->where('profile', $request->profile)->get();
+            }else{
+                $employees = "not found";
+            }
+
+            // $employees = Employe::with('mobiles');
+            // if ($request->gender != 'All') {
+            //         $employees = $employees->where('gender', $request->gender);
+            //     }
+
+            //     $employees = $employees->get();
+
+
+            // $employees =  Employe::with('mobiles')
+            // ->when($request->gender != 'All', function($query) use($request){
+            //     $query->where('gender', $request->gender);
+            // })->get();
+
+
+            // $employees =  Employe::with('mobiles')->get();
+
         }
-     
+        return datatables()->of($employees)
+
+            ->addIndexColumn()
+            ->addColumn('action', function ($employees) {
+                $actionBtn = '<a href="employee/' . $employees->id . '/edit" class="edit btn btn-success btn-sm" id="' . $employees->id . '" >Edit</a>
+                      <button  class="btn btn-sm btn-danger btn-flat show_confirm " data-id="' . $employees['id'] . '" data-toggle="tooltip" >Delete</button>';
+                return $actionBtn;
+            })
+            ->addColumn('number', function ($employee) {
+                $number = [];
+                foreach ($employee->mobiles as $key => $value) {
+                    $number[] = $value['number'];
+                }
+                return implode(', ', $number);
+            })
+            ->addColumn('is_active', function ($employee) {
+                if ($employee->is_active == '1') {
+                    return '<span class="badge badge-pill badge-success">Success</span>';
+                } elseif ($employee->is_active == '0') {
+                    return '<span class="badge badge-pill badge-danger">Danger</span>';
+                }
+            })
+            ->rawColumns(['is_active', 'number', 'action'])
+            ->make(true);
+
     }
-
-        //alternate method when relation with more morethan three models
-        // $users = User::all();
-        // $user = User::with('employees.mobiles')
-        // ->where('id', auth()->id())
-        // ->first();
-        // dd($user);
-
-      // alternate method for only two person relation using models
-         // $user = Auth::user();
-        // $employees = $user->employees;
-        // return view('employees.index',compact('employees'));
-
-
-        //alternate method to show data by id
-         // $id = Auth::user()->id;
-       // $employees = Employe::latest()->where('employee_id','=',$id)->paginate(10);
-       // return view('employees.index',compact('employees'));
-    
-
-       
-        //filter method
-        // dd($users->filter(function($item){
-        //     return $item['name'][0] == 'M';
-        // })->toArray());
-
-        //group by method
-        //dd($users->groupBy('id')  );
-        //$users->all();
-
-        // where method
-        // dd($employee= $users->where('id' , 3 ));
-        // $employee->all();
-
-
-        // alternate method for only two person relation using models
-        // $user = Auth::user();
-        // $employees = $user->employees;
-        // return view('employees.index',compact('employees'));
-
-
-        //alternate method to show data by id
-         // $id = Auth::user()->id;
-       // $employees = Employe::latest()->where('employee_id','=',$id)->paginate(10);
-       // return view('employees.index',compact('employees'));
-
-        //id="'.$employees->id.'"
-                // data_id ="'.$employees['id'].'"
-                // '.route(employee.destroy).'
-                // onclick="'.destroy('$employees->id').'"
-    
-
     /**
      * Show the form for creating a new resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -126,208 +97,86 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-       
         $validate = $request->validate([
-            'Name'=> 'required',
-            'email'=> 'required|email',
-            'profile'=> ['required'],
-            'age'=> 'required|int',
-            'gender'=> 'required',
-            "number.*" =>"required|max:10",
-         
-      
+            'Name' => 'required',
+            'email' => 'required|email',
+            'profile' => ['required'],
+            'age' => 'required|int',
+            'gender' => 'required',
+            "number.*" => "required|max:10",
         ]);
-        
-
         $employee = new Employe;
-        $employee->Name=$request->Name;
-        $employee->email=$request->email;
-        $employee->profile=$request->profile;
-        $employee->age=$request->age;
-        $employee->gender=$request->gender;
-        $employee->employee_id=auth()->user()->id;
-       
-        $employee->is_active=$request->boolean('select');
-        // dd($request->boolean('select'));
-         $employee->save();
-         // if($employee){
-        //     $employee->is_active == 1;
-        //     $employee->save();
-        //  }elseif($employee){
-        //     $employee->is_active !=1;
-        //  }
-        for($i = 0; $i < count($request->input('number')); $i++) {
+        $employee->Name = $request->Name;
+        $employee->email = $request->email;
+        $employee->profile = $request->profile;
+        $employee->age = $request->age;
+        $employee->gender = $request->gender;
+        $employee->employee_id = auth()->user()->id;
+        $employee->is_active = $request->boolean('is_active');
+        $employee->save();
+        for ($i = 0; $i < count($request->input('number')); $i++) {
             $mobile = new Mobile;
             $mobile->number = $request->number[$i];
             $employee->mobiles()
-            ->save($mobile);
-             //alternate method
-             // Mobile::create([
-           //  'number' => $request->input('number')[$i],
-            // 'employee_id'=> $employee->id
-             //]);
-         
-          }
+                ->save($mobile);
 
-        
-        
+        }
         return redirect('employee')->with('status', 'Profile updated!');
-       
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Employe  $employee
-     *  
+     *
      * @return \Illuminate\Http\Response
      */
-   
-    public function edit(Request $request ,Employe $employee )
-    { 
 
-        
-        // if(request()->ajax())
-        // {
-        //     $data = Employe::findOrFail($id);
-        //     dd($data);
-        //     return response()->json(['result' => $data]);
-        // }
-
-            $employee = Employe::with('mobiles')
-        ->where('id', $employee->id)
-        ->first();
-        //  dd($employee);
-        return view ('employees.edit', compact('employee'));
+    public function edit(Request $request, Employe $employee)
+    {
+        $employee = Employe::with('mobiles')
+            ->where('id', $employee->id)
+            ->first();
+        return view('employees.edit', compact('employee'));
     }
-
-
-
-
-        //path tells the only path 
-        // $users = $request->path();
-        // dd($users);
-
-        // is method gives true or false value path pattern is true or false
-        // $users=($request->is('employee/*'));
-        // dd($users);
-
-        // routeis method also tells the path true or false
-        // $users=($request->routeIs('employee.*'));
-        // dd($users);
-
-        // to get complete url address
-        // $users = $request->url();
-        // dd($users);
-        // $users = $request->fullUrl();
-        // dd($users );
-
-        // mrthod tells the its post or get
-        // $method = $request->method();
-        // dd($method);
-        // its sends the header information as raw data
-        // $value = $request->header('User-Agent');
-        // dd($value);
-
-        // it tells us about the ip address
-        // $users =$request->ip();
-        // dd($users);
-
-        // return an array containing all of the content types accepted by the request: we can use also prefer method
-        // $users = $request->getAcceptableContentTypes();
-        // dd($users);
-
-        // to get all data of file
-        // $employee=$request->all();
-        // dd($employee);
-
-      
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      *@param  \App\Employe $employee
      *@param  \App\ $id
-    *@param  \App\Mobile $mobile
+     *@param  \App\Mobile $mobile
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employe $employee  )
+    public function update(Request $request, Employe $employee)
     {
         // $number =[];
 
         //  dd($request->all());
-         $request->validate([
-            'Name'=> 'required',
-            'email'=> 'required|email',
-            'profile'=> 'required',
-            'age'=> 'required|int',
-            'gender'=>'required',
-            "number.*" =>"required|max:10",
-           
+        $request->validate([
+            'Name' => 'required',
+            'email' => 'required|email',
+            'profile' => 'required',
+            'age' => 'required|int',
+            'gender' => 'required',
+            "number.*" => "required|max:10",
+
         ]);
-        //dd($employee);
-       
-      
-       //dd($employee);
-       
-        $employee->Name = $request->Name ;
-        $employee->email = $request->email ;
-        $employee->profile = $request->profile ;
-        $employee->age = $request->age ;
-        $employee->gender = $request->gender ;
-        $employee->is_active=$request->boolean('select');
-        // if($request->has('select')){
-        //     $employee->is_active == '1';
-        // }else{
-        //     $employee->is_active == '0';
-        // }
-
-
+        $employee->Name = $request->Name;
+        $employee->email = $request->email;
+        $employee->profile = $request->profile;
+        $employee->age = $request->age;
+        $employee->gender = $request->gender;
+        $employee->is_active = $request->boolean('is_active');
         $employee->update();
-       //  dd($employee);
-        // if($employee){
-        //     $employee->is_active == 1;
-       
-        // }
-       
-        // $employee->is_active = isset($request['is_active']) ?  : '0' ? : '1';
-       
-       
-        //Alternate method
-        //  Employe::where('id',$id)
-        // ->update([
-        //     'Name'=> $request->Name,
-        //     'email'=>$request->email,
-        //     'profile'=>$request->profile,
-        //     'age'=>$request->age,
-        //     'gender'=>$request->gender,
-            
-            
-        // ]);
-        foreach($request->number as $key => $mobile){
-            // dd($mobile);
-            
-             Mobile::where('id', $key)
-             
-        ->update([
-            'number'=>$mobile,
-        ]);
-       }
-        return redirect()->route('employee.index')->with('status', 'Profile updated!');
-        
-        // if($employee->employee_id != Auth::id()){
-        //     abort(403);
-        //    }
-        // return redirect()->route('employee.index')->with('status', 'Profile updated!');
-        
-        // Mobile::where('id',$id)
-        // ->update([
-        //     'number'=>$request->number,
-        // ]);
 
-        
-    
+        foreach ($request->number as $key => $mobile) {
+            Mobile::where('id', $key)
+                ->update([
+                    'number' => $mobile,
+                ]);
+        }
+        return redirect()->route('employee.index')->with('status', 'Profile updated!');
     }
     /**
      * Remove the specified resource from storage.
@@ -336,32 +185,16 @@ class EmployeeController extends Controller
      * @param  \App\Mobile  $mobile
      * @return \Illuminate\Http\Response
      */
-     public function destroy( $id )
+    public function destroy($id)
     {
-        
-        $employee = Employe::find($id);
-    
-        foreach ($employee->mobiles as $mobile){
 
-                $mobile->delete();
+        $employee = Employe::find($id);
+
+        foreach ($employee->mobiles as $mobile) {
+
+            $mobile->delete();
         }
         $employee->delete();
         return redirect()->route('employee.index')->with('post dleted sucessfully');
     }
-      
-    
-    
-    
-    // if($employee->employee_id != Auth::id()){
-        //     abort(403);
-        //    }
-        // $Emp_id = $request->Emp_id;
-        // $query = Employe::find($Emp_id)->delete();
-        // 
-         //      $employee = Employe::with('mobiles');
-         // //    $employee->steps->each->delete();
-            // dd($employee);
-              //     $employee->delete();
-               //     return redirect()->route('employee.index')->with('post dleted sucessfully');
-                   //     //return response()->json(['data' => $employee], 200);
 }

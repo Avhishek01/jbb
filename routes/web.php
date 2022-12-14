@@ -36,4 +36,4 @@ Route::get('/greeting', function () {
 
 Route::resource('employee',EmployeeController::class)->middleware(['auth','CustomAuth']);
 Route::get('Datatable/employee',[EmployeeController::class ,'getEmployee'])->name('employee.Datatable');
-//  Route::delete('/employee/{id}' , [EmployeeController::class, 'destroy'])->name('employee.destroy');
+Route::get('filter',[EmployeeController::class,'filter'])->name('filter');

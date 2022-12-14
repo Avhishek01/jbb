@@ -58,14 +58,10 @@
         Number-2: <input type="text" name="number[]" placeholder="enter your Mobile Number" value=""><br><br>
         
         <p>Please select your Choice</p>
-         <input type="checkbox" name="select" >
-         <label for="select">Is Active</label>
-         {{-- @if($employee->is_active == 1{
-            <span class="badge badge-success">$employee->is_active</span>
-         }@else($employee->is_active== 0){
-            <span class="badge badge-danger">$employee->is_active</span>
-         }
-         @endif --}}
+        <label for="select">Is Active
+            <input type="hidden" value="0" name="is_active">
+            <input type="checkbox" name="is_active" >
+        </label>
          <br>
         
 

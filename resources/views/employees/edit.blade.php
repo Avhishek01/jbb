@@ -86,7 +86,7 @@
                 <p>Please select your Choice</p>
                 <label for="select">Is Active
                 <input type="hidden" value="0" name="select">
-                <input type="checkbox" name="select" @if(($employee->is_active == 1)) checked  >@endif
+                <input type="checkbox" name="is_active" @if(($employee->is_active == 1)) checked  >@endif
                     
                 </label>
                 {{-- {{dd($employee->age)}} --}}
