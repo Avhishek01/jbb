@@ -1,5 +1,6 @@
-@extends('employees.layout')
-@Include('layouts.dashboard')
+
+@extends('layouts.dashboard')
+
 <center>
     @section('content')
         <!DOCTYPE html>
@@ -13,7 +14,7 @@
         </head>
 
         <body>
-        <br>
+        
         <div class="col-md-10">
             <div class="row">
                 <div class="col-lg-12 margin-tb">

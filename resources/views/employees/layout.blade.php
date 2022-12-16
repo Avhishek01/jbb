@@ -10,6 +10,7 @@
 
 <div class="container">
     @yield('content')
+    @yield('snip')
 </div>
 
 </body>

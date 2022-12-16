@@ -96,3 +96,92 @@
 //     'age'=>$request->age,
 //     'gender'=>$request->gender,
 // ]); --}}
+
+
+{{-- elseif($request->profile =='SE'){
+    $employees = Employe::with('mobiles')->get();
+}elseif($request->profile =='JE'){
+    $employees = Employe::with('mobiles')->get();
+}elseif($request->profile =='UI/UX'){
+    $employees = Employe::with('mobiles')->get();
+}elseif($request->profile =='LD'){
+    $employees = Employe::with('mobiles')->get();
+} --}}
+
+{{-- // dropdown fetch data code with basic if else
+ // if ($request->gender == 'All'|| $request->profile =='Profile') {
+    //     $employees = Employe::with('mobiles')->get();
+    // } elseif($request->gender == 'Male' || $request->profile =='profile') {
+    //     $employees = Employe::with('mobiles')->where([
+    //         ['gender',$request->gender],['profile', $request->profile],
+    //     ])->get();
+    // }elseif($request->gender == 'Female' || $request->profile =='profile'){
+    //     $employees = Employe::with('mobiles')->where('gender', $request->gender)->where('profile', $request->profile)->get();
+    // }else{
+    //     return "not found";
+    // }
+
+    // $employees =  Employe::with('mobiles')
+            // ->when($request->gender != 'All', function($query) use($request){
+            //     $query->where('gender', $request->gender);
+            //     $query->where('profile', $request->profile);
+            // })->get();
+
+
+            // $employees =  Employe::with('mobiles')->get(); --}} 
+
+        
+            
+            {{-- filter dropdown code --}}
+
+            {{-- <script>
+    $(document).ready(function() {
+        $('#gender').on('change', function() {
+
+            let value = $(this).val();
+
+            $.ajax({
+                url: "{{ route('employee.Datatable') }}",
+                type: 'Get',
+                data: {
+                    gender: value,
+                },
+                success: function(data) {
+                    console.log(data);
+                    $('#employee').empty();
+                    $('#employee').html(data);
+
+
+
+                }
+            })
+        })
+    })
+</script> --}}
+{{-- @foreach ($user->employees as $employee) 
+<tr>
+    
+    <td>{{ $employee ->name }}</td>
+    <td>{{ $employee ->email }}</td>
+    <td>{{ $employee ->profile }}</td>
+    <td>{{$employee ->age}}</td>
+    <td>{{$employee ->gender}}</td>
+  
+    <td>
+    @foreach ($employee->mobiles as $mobile)
+    ({{$mobile ->number  }}),
+    
+    @endforeach
+    </td>
+    <td>
+        <form action="{{ route('employee.destroy',$employee ->id) }}" method="POST">
+
+            <a class="btn btn-primary" href="{{ route('employee.edit',$employee ->id) }}">Edit</a>
+
+            @csrf
+            <input name="_method" type="hidden" value="DELETE">
+            <button type="submit" class="btn btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>Delete</button>
+        </form>
+    </td>
+       
+</tr>@endforeach --}}

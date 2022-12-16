@@ -20,10 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('master');
-
-})->middleware(['auth'])->name('dashboard');
+Route::get('dashboard', [EmployeeController::class ,'user'])
+->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 Route::get('/greeting', function () {
@@ -36,4 +34,4 @@ Route::get('/greeting', function () {
 
 Route::resource('employee',EmployeeController::class)->middleware(['auth','CustomAuth']);
 Route::get('Datatable/employee',[EmployeeController::class ,'getEmployee'])->name('employee.Datatable');
-Route::get('filter',[EmployeeController::class,'filter'])->name('filter');
+// Route::get('filter',[EmployeeController::class,'filter'])->name('filter');

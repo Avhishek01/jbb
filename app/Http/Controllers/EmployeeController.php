@@ -25,53 +25,40 @@ class EmployeeController extends Controller
     {
 
         if ($request->ajax()) {
-            
-            if ($request->gender == 'All'|| $request->profile =='Profile') {
-                $employees = Employe::with('mobiles')->get();
-            } elseif($request->gender == 'Male' || $request->profile =='SE') {
-                $employees = Employe::with('mobiles')->where('gender', $request->gender)->where('profile', $request->profile)->get();
-            }elseif($request->gender == 'Female' || $request->profile =='JE'){
-                $employees = Employe::with('mobiles')->where('gender', $request->gender)->where('profile', $request->profile)->get();
-            }else{
-                $employees = "not found";
+
+            $employees = Employe::with('mobiles');
+
+            if ($request->gender != 'All') {
+                $employees = $employees->where('gender', $request->gender);
             }
 
-            // $employees = Employe::with('mobiles');
-            // if ($request->gender != 'All') {
-            //         $employees = $employees->where('gender', $request->gender);
-            //     }
+            if ($request->profile != 'Profile') {
+                $employees = $employees->where('profile', $request->profile);
+            }
 
-            //     $employees = $employees->get();
-
-
-            // $employees =  Employe::with('mobiles')
-            // ->when($request->gender != 'All', function($query) use($request){
-            //     $query->where('gender', $request->gender);
-            // })->get();
-
-
-            // $employees =  Employe::with('mobiles')->get();
+            $employees = $employees->get();
 
         }
         return datatables()->of($employees)
 
             ->addIndexColumn()
             ->addColumn('action', function ($employees) {
+                
                 $actionBtn = '<a href="employee/' . $employees->id . '/edit" class="edit btn btn-success btn-sm" id="' . $employees->id . '" >Edit</a>
                       <button  class="btn btn-sm btn-danger btn-flat show_confirm " data-id="' . $employees['id'] . '" data-toggle="tooltip" >Delete</button>';
                 return $actionBtn;
             })
-            ->addColumn('number', function ($employee) {
+            ->addColumn('number', function ($employees) {
                 $number = [];
-                foreach ($employee->mobiles as $key => $value) {
+                foreach ($employees->mobiles as $key => $value) {
                     $number[] = $value['number'];
                 }
                 return implode(', ', $number);
             })
-            ->addColumn('is_active', function ($employee) {
-                if ($employee->is_active == '1') {
+            ->addColumn('is_active', function ($employees) {
+                if ($employees->is_active == '1') {
                     return '<span class="badge badge-pill badge-success">Success</span>';
-                } elseif ($employee->is_active == '0') {
+                } elseif ($employees->is_active == '0') {
                     return '<span class="badge badge-pill badge-danger">Danger</span>';
                 }
             })
@@ -196,5 +183,28 @@ class EmployeeController extends Controller
         }
         $employee->delete();
         return redirect()->route('employee.index')->with('post dleted sucessfully');
+    }
+    public function user(Request $request)
+    {
+        if ($request->ajax()) {
+            $users = User::with('employees')
+                ->get();
+            
+            // dd($users->toArray());
+            return datatables()->of($users)
+            
+            ->addIndexColumn()
+            ->addColumn('number',function($user){
+                // dd($user->employees->count());
+               return $user->employees->count();
+               
+            })
+            ->rawColumns(['number'])            
+            ->make(true);
+
+        
+
+        }
+        return view('employees.user');
     }
 }
