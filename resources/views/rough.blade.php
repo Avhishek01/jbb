@@ -128,13 +128,13 @@
             // })->get();
 
 
-            // $employees =  Employe::with('mobiles')->get(); --}} 
+            // $employees =  Employe::with('mobiles')->get(); --}}
 
-        
-            
-            {{-- filter dropdown code --}}
 
-            {{-- <script>
+
+{{-- filter dropdown code --}}
+
+{{-- <script>
     $(document).ready(function() {
         $('#gender').on('change', function() {
 
@@ -185,3 +185,79 @@
     </td>
        
 </tr>@endforeach --}}
+
+
+{{-- checkbox script
+   <script> 
+        $(document).ready(function() {
+            function CheckboxFunc() {
+                var checkBox = document.getElementById("checkbox");
+                if (checkBox.checked == true) {
+                    return "hello";
+                    $('#aaa').DataTable().ajax.reload();
+                } else {
+                    return "hie"
+                }
+                $('#aaa').DataTable().ajax.reload();
+            }
+        })
+    </script> 
+
+
+    {<script>
+        $(document).ready(function() {
+            $('#checkbox').on('click', function() {
+
+                let value = $(this).val();
+                alert(value);
+
+                $.ajax({
+                    url: "{{ route('dashboard') }}",
+                    type: 'Get',
+                    data: {
+                        number: value,
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        // $('#employee').empty();
+                        // $('#employee').html(data);
+
+
+
+                    }
+                })
+            })
+        })
+    </script> 
+
+     <script>
+        $(document).ready(function() {
+            $('#checkbox').click(function() {
+                if ($('#checkbox').is(":checked")) {
+                    alert($("input[type='checkbox']").val());
+                }
+            })
+        })
+    </script>  --}}
+
+
+{{-- addEventListener on checkbox
+     function Init() {
+             var checkbox = document.getElementById("#checkbox");
+             if (checkbox.addEventListener) {
+                 checkbox.addEventListener("CheckboxStateChange", OnChangeCheckbox, false);
+            }
+         } 
+
+
+     <script>
+        var checkbox = document.querySelector("input[name=checkbox]");
+
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                alert("Checkbox is checked");
+            } else {
+                alert("Checkbox is not checked");
+            }
+        });
+    </script>  --}}

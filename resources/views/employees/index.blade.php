@@ -31,7 +31,7 @@
         </select><br><br>
     </form>
 
-    <table class="table table-bordered yajra-datatable" id="employee">
+    <table class="table table-bordered yajra-datatable">
 
         <thead>
 
@@ -152,7 +152,7 @@
                 var empId = $(this).data('id');
 
                 var url = "employee/" + empId
-                console.log(url);
+                // console.log(url);
                 // alert(Emp_id);
                 $.ajax({
                     url: url,
@@ -169,9 +169,7 @@
                         $('.yajra-datatable').DataTable().ajax.reload(null, false);
 
                     },
-                    error: function() {
-
-                    }
+                   
                 });
 
             }

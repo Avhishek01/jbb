@@ -66,7 +66,7 @@
 
 <script>
     $(document).ready(function() {
-
+        
         $(function() {
             var dataTable = $('.yajra-datatable').DataTable({
 

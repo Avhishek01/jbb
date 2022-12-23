@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employe;
-use App\Models\Mobile;
-use App\Models\User;
-use DataTables;
+use DB;
 use id;
+use DataTables;
+use App\Models\User;
+use App\Models\Mobile;
+use App\Models\Employe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,12 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        $users = User::all();
+        $user = User::with('employees.mobiles')
+        ->where('id', auth()->id())
+         ->first();
+        //  dd($users);
         return view('employees.index');
     }
     public function getEmployee(Request $request)
@@ -27,8 +33,10 @@ class EmployeeController extends Controller
         if ($request->ajax()) {
 
             $employees = Employe::with('mobiles');
+            // dd($employees);
 
             if ($request->gender != 'All') {
+
                 $employees = $employees->where('gender', $request->gender);
             }
 
@@ -38,27 +46,29 @@ class EmployeeController extends Controller
 
             $employees = $employees->get();
 
+        }if($request->is_admin == 'true'){
+            return datatables()->of($employees);
         }
         return datatables()->of($employees)
 
             ->addIndexColumn()
-            ->addColumn('action', function ($employees) {
-                
-                $actionBtn = '<a href="employee/' . $employees->id . '/edit" class="edit btn btn-success btn-sm" id="' . $employees->id . '" >Edit</a>
-                      <button  class="btn btn-sm btn-danger btn-flat show_confirm " data-id="' . $employees['id'] . '" data-toggle="tooltip" >Delete</button>';
+            ->addColumn('action', function ($employee) {
+                // dd($employee->toArray());
+                $actionBtn = '<a href="employee/' . $employee->id . '/edit" class="edit btn btn-success btn-sm" id="' . $employee->id . '" >Edit</a>
+                      <button  class="btn btn-sm btn-danger btn-flat show_confirm " data-id="' . $employee['id'] . '" data-toggle="tooltip" >Delete</button>';
                 return $actionBtn;
             })
-            ->addColumn('number', function ($employees) {
+            ->addColumn('number', function ($employee) {
                 $number = [];
-                foreach ($employees->mobiles as $key => $value) {
+                foreach ($employee->mobiles as $key => $value) {
                     $number[] = $value['number'];
                 }
                 return implode(', ', $number);
             })
-            ->addColumn('is_active', function ($employees) {
-                if ($employees->is_active == '1') {
+            ->addColumn('is_active', function ($employee) {
+                if ($employee->is_active == '1') {
                     return '<span class="badge badge-pill badge-success">Success</span>';
-                } elseif ($employees->is_active == '0') {
+                } elseif ($employee->is_active == '0') {
                     return '<span class="badge badge-pill badge-danger">Danger</span>';
                 }
             })
@@ -187,22 +197,36 @@ class EmployeeController extends Controller
     public function user(Request $request)
     {
         if ($request->ajax()) {
-            $users = User::with('employees')
-                ->get();
-            
-            // dd($users->toArray());
-            return datatables()->of($users)
-            
-            ->addIndexColumn()
-            ->addColumn('number',function($user){
-                // dd($user->employees->count());
-               return $user->employees->count();
-               
-            })
-            ->rawColumns(['number'])            
-            ->make(true);
+            if ($request->checkbox != 'true') {
+                $users = User::with('employees')
+                    ->get();
+            } else {
+                // agr true hai jis user ke employee hai wo dikha de sirf
+                $users = User::has('employees')
+                            ->get();
 
-        
+                }
+            return datatables()->of($users)
+
+                ->addIndexColumn()
+                ->addColumn('number', function ($user) {
+
+                    $inactive = $user->employees
+                        ->where('is_active', '=', 0)
+                        ->count();
+                    $active = $user->employees
+                        ->where('is_active', '=', 1)
+                        ->count();
+
+                    if ($user->employees->count()) {
+                        return '<span class="badge badge-pill badge-success">' . $active . ' Active Employee</span><span class="badge badge-pill badge-danger">' . $inactive . ' Inactive Employee</span>';
+                    } else {
+                        return "No Employee";
+                    }
+
+                })
+                ->rawColumns(['number'])
+                ->make(true);
 
         }
         return view('employees.user');
