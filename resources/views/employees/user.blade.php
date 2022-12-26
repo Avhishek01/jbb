@@ -29,52 +29,53 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            
-                var user ='jhg';
+
+            var user = 'jhg';
 
 
-                var dataTable = $('.user-table').DataTable({
+            var dataTable = $('.user-table').DataTable({
 
-                    processing: true,
-                    serverSide: true,
-                    ajax: {
-                        url: "{{ route('dashboard') }}",
-                        "data": function(d) {
-                            d.checkbox = user;
-                        }
-                    },
-                    columns: [{
-                            data: 'id',
-                            name: 'id'
-                        },
-                        {
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
-                            data: 'email',
-                            name: 'email'
-                        },
-                        {
-                            name: 'number',
-                            data: 'number'
-                        }
-
-                    ]
-
-                });
-                var checkbox = document.querySelector("input[name=checkbox]");
-
-                checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        user = 'true';
-                        console.log(user);
-                    } else {
-                        user = 'false';
-                        console.log(user);
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('dashboard') }}",
+                    "data": function(d) {
+                        d.checkbox = user;
                     }
-                    dataTable.ajax.reload();
-                });
+                },
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        name: 'number',
+                        data: 'number'
+                    },
+                   
+
+                ]
+
+            });
+            var checkbox = document.querySelector("input[name=checkbox]");
+
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    user = 'true';
+                    console.log(user);
+                } else {
+                    user = 'false';
+                    console.log(user);
+                }
+                dataTable.ajax.reload();
+            });
 
         })
     </script>

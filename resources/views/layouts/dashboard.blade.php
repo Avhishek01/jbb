@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>Document</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -49,6 +50,18 @@
                                 <li><a href="{{ route('logout') }}"><i class="fa fa-bar-chart"
                                             aria-hidden="true"></i><span class="hidden-xs hidden-sm">Logout</span></a>
                                 </li>
+                                <li>
+                                    <div class="fa fa-bar-chart" style="color: white">
+                                        <center>
+                                         <h1>LOGIN-USER</h1> 
+                                         {{ auth()->user()->name}}
+                                        {{-- <?php
+                                        $user = Auth::user()->name;
+                                        
+                                        print $user;
+                                        ?> --}}
+                                    </div>
+                        </li>
 
                             </ul>
                         </div>

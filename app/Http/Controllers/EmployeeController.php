@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use id;
-use DataTables;
-use App\Models\User;
-use App\Models\Mobile;
 use App\Models\Employe;
+use App\Models\Mobile;
+use App\Models\User;
+use DataTables;
+use id;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,12 +18,8 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        $users = User::all();
-        $user = User::with('employees.mobiles')
-        ->where('id', auth()->id())
-         ->first();
-        //  dd($users);
+    {
+
         return view('employees.index');
     }
     public function getEmployee(Request $request)
@@ -32,9 +27,18 @@ class EmployeeController extends Controller
 
         if ($request->ajax()) {
 
-            $employees = Employe::with('mobiles');
-            // dd($employees);
+            if (auth()->user()->is_admin == 1) {
+                $employees = Employe::with('mobiles')
 
+                    ->get();
+                //  dd(auth()->user()->is_admin);
+
+            } else {
+                $employees = Employe::with('mobiles')
+                    ->where('employee_id', Auth()->id())
+                    ->get();
+
+            }
             if ($request->gender != 'All') {
 
                 $employees = $employees->where('gender', $request->gender);
@@ -44,16 +48,14 @@ class EmployeeController extends Controller
                 $employees = $employees->where('profile', $request->profile);
             }
 
-            $employees = $employees->get();
-
-        }if($request->is_admin == 'true'){
+        }if ($request->is_admin == 'true') {
             return datatables()->of($employees);
         }
         return datatables()->of($employees)
 
             ->addIndexColumn()
             ->addColumn('action', function ($employee) {
-                // dd($employee->toArray());
+
                 $actionBtn = '<a href="employee/' . $employee->id . '/edit" class="edit btn btn-success btn-sm" id="' . $employee->id . '" >Edit</a>
                       <button  class="btn btn-sm btn-danger btn-flat show_confirm " data-id="' . $employee['id'] . '" data-toggle="tooltip" >Delete</button>';
                 return $actionBtn;
@@ -131,10 +133,16 @@ class EmployeeController extends Controller
 
     public function edit(Request $request, Employe $employee)
     {
+     if (auth()->user()->id != 'id') {
+        // dd(auth()->user()->id);
         $employee = Employe::with('mobiles')
             ->where('id', $employee->id)
             ->first();
+            // dd($employee->id);
         return view('employees.edit', compact('employee'));
+     }else{
+        return "hello";
+     }
     }
     /**
      * Update the specified resource in storage.
@@ -203,9 +211,9 @@ class EmployeeController extends Controller
             } else {
                 // agr true hai jis user ke employee hai wo dikha de sirf
                 $users = User::has('employees')
-                            ->get();
+                    ->get();
 
-                }
+            }
             return datatables()->of($users)
 
                 ->addIndexColumn()
@@ -225,6 +233,7 @@ class EmployeeController extends Controller
                     }
 
                 })
+
                 ->rawColumns(['number'])
                 ->make(true);
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +5,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-  
+
 
 </head>
 
@@ -66,7 +65,7 @@
 
 <script>
     $(document).ready(function() {
-        
+
         $(function() {
             var dataTable = $('.yajra-datatable').DataTable({
 
@@ -111,6 +110,7 @@
                         data: 'is_active',
                         name: 'is_active'
                     },
+
                     {
                         data: 'action',
                         name: 'action',
@@ -163,6 +163,10 @@
                     url: url,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                       
+                    },
+                    data: {
+                        "_token": "{{ csrf_token() }}",
                     },
                     type: "delete",
                     success: function(response) {
@@ -187,9 +191,3 @@
 </script>
 
 </html>
-
-
-
-
-
-
